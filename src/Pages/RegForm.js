@@ -2,6 +2,7 @@ import React from "react";
 import Dropdown from "../Components/Dropdown";
 import InputField from "../Components/InputField";
 import Button from "../Components/Button";
+import axios from "axios";
 
 function RegForm() {
   const genderOptions = [
@@ -41,6 +42,31 @@ function RegForm() {
     ],
   ];
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    // console.log("files", event.target);
+
+    let tempFormData = {};
+
+    for (let i = 0; i < event.target.length; i++) {
+      if (event.target[i].type == "file" && event.target[i].files.length) {
+        tempFormData[event.target[i].id] = event.target[i].files[0].name;
+      } else {
+        const field = event.target[i].id;
+        tempFormData[field] = event.target[i].value;
+      }
+    }
+    axios
+      .post("http://localhost:4000/hostelreg/applications", tempFormData)
+      .then(function (response) {
+        console.log("success", response.data);
+      })
+      .catch(function (err) {
+        console.log("oops", err);
+      });
+  };
+  // console.log(formData);
+
   return (
     <div className="w-full bg-slate-100">
       <div className="sm:w-2/3 mx-auto sm:p-4">
@@ -48,7 +74,7 @@ function RegForm() {
         <h3 className="mx-auto font-semibold text-2xl">
           ACADEMIC YEAR 2022-2023
         </h3>
-        <form className="m-10">
+        <form className="m-10" onSubmit={(event) => handleSubmit(event)}>
           <h4 className="font-semibold text-2xl">Personal Details</h4>
           <img
             src="https://cdn.vectorstock.com/i/1000x1000/77/30/default-avatar-profile-icon-grey-photo-placeholder-vector-17317730.webp"

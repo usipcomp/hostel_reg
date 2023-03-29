@@ -32,7 +32,6 @@ function InputField(props) {
         id={props.id}
         className={classes}
         value={props.value}
-        required
         disabled={props.isDisabled}
         placeholder={props.placeholder}
         accept="application/pdf"
