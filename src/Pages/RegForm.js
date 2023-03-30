@@ -44,7 +44,6 @@ function RegForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // console.log("files", event.target);
 
     let tempFormData = {};
 
@@ -65,7 +64,6 @@ function RegForm() {
         console.log("oops", err);
       });
   };
-  // console.log(formData);
 
   return (
     <div className="w-full bg-slate-100">

@@ -5,15 +5,15 @@ const multer = require("multer");
 const upload = multer();
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const dotenv = require("dotenv");
+dotenv.config();
 app.use(cors());
+console.log(process.env);
 
-mongoose.connect(
-  "mongodb+srv://usipcompcentre2022august:usip123p1@cluster0.bgnb6c9.mongodb.net/?retryWrites=true&w=majority",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
+mongoose.connect(process.env.MONGOOSE_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 app.use(bodyParser.json());
 
