@@ -24,7 +24,7 @@ function InputField(props) {
   return (
     <div>
       <label
-        for={props.id}
+        htmlFor={props.id}
         className="block mb-2 text-lg font-semibold text-gray-900"
       >
         {props.label}

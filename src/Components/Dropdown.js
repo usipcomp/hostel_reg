@@ -4,8 +4,8 @@ import classNames from "classnames";
 
 function Dropdown(props) {
   const [selectedValue, setSelectedValue] = useState(props.value);
-  const optionsList = props.options.map((option) => {
-    return <option value={option.value}>{option.label}</option>;
+  const optionsList = props.options.map((option,index) => {
+    return <option key={index} value={option.value}>{option.label}</option>;
   });
   console.log(selectedValue);
   const classes = classNames({
@@ -34,7 +34,7 @@ function Dropdown(props) {
         onChange={(event) => {
           setSelectedValue(event.target.value);
         }}
-        id={props.label}
+        id={props.id}
         className={classes}
         required
         value={props.placeholder}
