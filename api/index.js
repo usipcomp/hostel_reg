@@ -8,7 +8,6 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 dotenv.config();
 app.use(cors());
-console.log(process.env);
 
 mongoose.connect(process.env.MONGOOSE_URL, {
   useNewUrlParser: true,
