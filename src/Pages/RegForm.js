@@ -49,7 +49,7 @@ function RegForm() {
     let tempFormData = {};
 
     for (let i = 0; i < event.target.length; i++) {
-      if (event.target[i].type == "file" && event.target[i].files.length) {
+      if (event.target[i].type === "file" && event.target[i].files.length) {
         tempFormData[event.target[i].id] = event.target[i].files[0].name;
       } else {
         const field = event.target[i].id;
@@ -57,7 +57,7 @@ function RegForm() {
       }
     }
     axios
-      .post("http://localhost:4000/hostelreg/applications", tempFormData)
+      .post("http://localhost:4000/hostelreg/applications/auth/application", tempFormData)
       .then(function (response) {
         console.log("success", response.data);
       })
@@ -107,6 +107,7 @@ function RegForm() {
               label="Gender"
               isDisabled
               placeholder="Male"
+              id = "gender"
             ></Dropdown>
             <InputField
               label="Mobile Number"
@@ -118,6 +119,7 @@ function RegForm() {
             <Dropdown
               options={bloodGroupOptions}
               label="Blood Group"
+              id="blood_group"
             ></Dropdown>
             <InputField
               label="Region"
@@ -280,7 +282,7 @@ function RegForm() {
             ></InputField>
             <InputField
               label="Mother Office Mobile Number"
-              id="Mother_office_phone_no"
+              id="mother_office_phone_no"
               type="number"
             ></InputField>
           </div>
@@ -432,6 +434,7 @@ function RegForm() {
             ></InputField>
             <InputField
               type="text"
+              id="discrepancy"
               label="If there is any discrepancy in the pre-filled information, submit the comma separated names of the fields here."
             ></InputField>
             <div className="col-span-2 flex items-center mb-4">
@@ -441,7 +444,7 @@ function RegForm() {
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-fray-300 rounded focus:ring-blue-500 cursor-pointer my-auto"
               ></input>
               <label
-                for="TandC"
+                htmlFor="TandC"
                 className="ml-2 text-md font-semibold text-gray-900 cursor-pointer my-auto"
               >
                 The information given above is to the best of my knowledge and I

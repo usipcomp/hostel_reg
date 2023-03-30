@@ -1,12 +1,12 @@
-import mongoose from "mongoose";
-
+// import mongoose from "mongoose";
+const mongoose = require("mongoose")
 const { Schema } = mongoose;
 
 const ApplicationSchema = Schema({
   RollNo: { type: String },
   Name: { type: String },
   Email: { type: String },
-  Gender: { type: String, enum: ["Male", "Female"] },
+  Gender: { type: String, enum: ["male", "female"] },
   MobileNo: { type: String },
   Course: { type: String },
   Branch: { type: String },
@@ -18,7 +18,7 @@ const ApplicationSchema = Schema({
     type: String,
     enum: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"],
   },
-  Region: { type: String, enum: ["Delhi", "Outside Delhi"] },
+  Region: { type: String, enum: ["delhi", "outside delhi"] },
   SGPA: { type: Number },
   ChronicProblems: { type: Array },
   Preferences: { type: Array },
@@ -59,3 +59,5 @@ const ApplicationSchema = Schema({
   Discrepancy: { type: String },
   ProfilePic: { type: String },
 });
+const Hostel_Applications = mongoose.model('Hostel_Applications',ApplicationSchema)
+module.exports = Hostel_Applications;

@@ -16,16 +16,13 @@ mongoose.connect(
 );
 
 app.use(bodyParser.json());
-
+app.use(express.json());
 const db = mongoose.connection;
 db.on("open", () => {
   console.log("Database Connected");
 });
-
-app.post("/hostelreg/applications", (req, res) => {
-  console.log(req.body);
-  res.send(req.body);
-});
+app.use('/hostelreg/applications/auth', require('./routes/auth'));
+// app.post("/hostelreg/applications",);
 
 app.listen(4000, () => {
   console.log("Listening on Port 4000");
