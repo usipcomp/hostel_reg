@@ -10,13 +10,15 @@ function InputField(props) {
     "text-gray-900": true,
     "font-semibold": props.isDisabled,
     "cursor-not-allowed": props.isDisabled,
-    "text-md": true,
     "rounded-lg": true,
     "focus:ring-blue-500": true,
     "focus:border-blue-500": true,
     block: true,
     "w-full": true,
     "p-2.5": true,
+    "text-xl": props.textxl,
+    "text-md": true,
+    "my-2": true,
   });
 
   return (

@@ -56,7 +56,7 @@ function RegForm() {
       }
     }
     axios
-      .post("http://localhost:4000/hostelreg/applications", tempFormData)
+      .post("http://localhost:4000/applications", tempFormData)
       .then(function (response) {
         console.log("success", response.data);
       })
