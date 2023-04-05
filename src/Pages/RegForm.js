@@ -3,8 +3,12 @@ import Dropdown from "../Components/Dropdown";
 import InputField from "../Components/InputField";
 import Button from "../Components/Button";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { logout } from "../redux/userRedux";
 
 function RegForm() {
+  const user = useSelector((state) => state.currentUser.student);
+
   const genderOptions = [
     { label: "Male", value: "male" },
     { label: "Female", value: "female" },
@@ -68,6 +72,14 @@ function RegForm() {
       });
   };
 
+  let photo;
+  if (user.photo === "NULL") {
+    photo =
+      "https://cdn.vectorstock.com/i/1000x1000/77/30/default-avatar-profile-icon-grey-photo-placeholder-vector-17317730.webp";
+  } else {
+    photo = user.photo;
+  }
+
   return (
     <div className="w-full bg-slate-100">
       <div className="sm:w-2/3 mx-auto sm:p-4">
@@ -77,31 +89,28 @@ function RegForm() {
         </h3>
         <form className="m-10" onSubmit={(event) => handleSubmit(event)}>
           <h4 className="font-semibold text-2xl">Personal Details</h4>
-          <img
-            src="https://cdn.vectorstock.com/i/1000x1000/77/30/default-avatar-profile-icon-grey-photo-placeholder-vector-17317730.webp"
-            className="mx-auto h-[200px]"
-          ></img>
+          <img src={photo} className="mx-auto h-[200px]"></img>
           <div className="grid gap-6 mb-6 md:grid-cols-2 my-4">
             <InputField
               isDisabled
               id="roll_no"
               label="Roll Number"
               type="text"
-              value="2K21/EE/85"
+              value={user.roll_no}
             ></InputField>
             <InputField
               id="name"
               label="Name"
               type="text"
               isDisabled
-              value="Ayush Gupta"
+              value={user.fullname}
             ></InputField>
             <InputField
               id="email"
               label="Email"
               type="text"
               isDisabled
-              value="ayush.gupta2002@gmail.com"
+              value={user.email}
             ></InputField>
             <Dropdown
               options={genderOptions}
@@ -109,13 +118,14 @@ function RegForm() {
               isDisabled
               placeholder="Male"
               id="gender"
+              value={user.sex}
             ></Dropdown>
             <InputField
               label="Mobile Number"
               type="number"
               id="phone_no"
               isDisabled
-              value="8076132946"
+              value={user.phone}
             ></InputField>
             <Dropdown
               options={bloodGroupOptions}
@@ -135,7 +145,7 @@ function RegForm() {
           <div className="grid gap-6 mb-6 md:grid-cols-2 my-4">
             <InputField
               label="Course"
-              value="B.Tech"
+              value={user.aprog}
               isDisabled
               id="course"
               type="text"
@@ -144,7 +154,7 @@ function RegForm() {
               label="Branch"
               id="branch"
               isDisabled
-              value="EE"
+              value={user.sp_code}
               type="text"
             ></InputField>
             <InputField
@@ -166,7 +176,7 @@ function RegForm() {
               label="Year of Admission"
               id="year_of_admission"
               isDisabled
-              value={2021}
+              value={user.reg_year}
               type="number"
             ></InputField>
             <InputField
@@ -226,11 +236,15 @@ function RegForm() {
               label="Father Name"
               id="father_name"
               type="text"
+              isDisabled
+              value={user.fathername}
             ></InputField>
             <InputField
               label="Father Mobile Number"
               id="father_phone_no"
-              type="number"
+              type="String"
+              isDisabled
+              value={user.f_phone}
             ></InputField>
             <InputField
               label="Father Email"
@@ -260,11 +274,15 @@ function RegForm() {
               label="Mother Name"
               id="mother_name"
               type="text"
+              isDisabled
+              value={user.mothername}
             ></InputField>
             <InputField
               label="Mother Mobile Number"
               id="mother_phone_no"
-              type="number"
+              type="String"
+              isDisabled
+              value={user.m_phone}
             ></InputField>
             <InputField
               label="Mother Email"
@@ -331,74 +349,48 @@ function RegForm() {
               isDisabled
               id="home_address"
               label="Address"
-              value="Village Talwal"
+              value={user.address}
               type="text"
             ></InputField>
             <InputField
               isDisabled
               id="home_city"
               label="City"
-              value="GHAZIPUR"
+              value={user.city}
               type="text"
             ></InputField>
-            <InputField
-              isDisabled
-              id="home_state"
-              label="State"
-              value="UTTAR PRADESH"
-              type="text"
-            ></InputField>
+            <InputField id="home_state" label="State" type="text"></InputField>
             <InputField
               id="home_country"
-              isDisabled
               label="Country"
-              value="INDIA"
               type="text"
             ></InputField>
             <InputField
               id="home_pincode"
               isDisabled
               label="Pincode"
-              value="233001"
-              type="number"
+              value={user.pincode}
+              type="String"
             ></InputField>
           </div>
           <hr className="my-3"></hr>
           <h4 className="font-semibold text-2xl">Correspondence Address</h4>
           <div className="grid gap-6 mb-6 md:grid-cols-2 my-4">
             <InputField
-              isDisabled
               id="corr_address"
               label="Address"
-              value="Village Talwal"
               type="text"
             ></InputField>
+            <InputField id="corr_city" label="City" type="text"></InputField>
+            <InputField id="corr_state" label="State" type="text"></InputField>
             <InputField
-              isDisabled
-              id="corr_city"
-              label="City"
-              value="GHAZIPUR"
-              type="text"
-            ></InputField>
-            <InputField
-              isDisabled
-              id="corr_state"
-              label="State"
-              value="UTTAR PRADESH"
-              type="text"
-            ></InputField>
-            <InputField
-              isDisabled
               id="corr_country"
               label="Country"
-              value="INDIA"
               type="text"
             ></InputField>
             <InputField
-              isDisabled
               id="corr_country"
               label="Pincode"
-              value="233001"
               type="number"
             ></InputField>
           </div>

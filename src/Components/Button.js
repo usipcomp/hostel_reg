@@ -10,6 +10,7 @@ function Button({
   outline,
   rounded,
   wide,
+  handleClick,
   ...rest
 }) {
   const classes = className(
@@ -34,7 +35,7 @@ function Button({
   );
 
   return (
-    <button className={classes} {...rest}>
+    <button className={classes} onClick={() => handleClick()} {...rest}>
       <div className="mx-auto">{children}</div>
     </button>
   );

@@ -37,6 +37,9 @@ function InputField(props) {
         disabled={props.isDisabled}
         placeholder={props.placeholder}
         accept="application/pdf"
+        onChange={(e) => {
+          props.handleChange(e);
+        }}
       ></input>
     </div>
   );

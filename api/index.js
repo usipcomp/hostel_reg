@@ -17,6 +17,7 @@ mongoose.connect(process.env.MONGOOSE_URL, {
 
 app.use(bodyParser.json());
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 const db = mongoose.connection;
 db.on("open", () => {
   console.log("Database Connected");
@@ -24,7 +25,7 @@ db.on("open", () => {
 app.use("/hostelreg/applications/auth", require("./routes/auth"));
 
 //Login
-app.use("/hostelreg/login",require("./routes/login"));
+app.use("/hostelreg/login", require("./routes/login"));
 
 app.listen(4000, () => {
   console.log("Listening on Port 4000");

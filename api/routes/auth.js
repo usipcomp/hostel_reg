@@ -33,14 +33,14 @@ router.post(
           .json({ success: success, errors: errors.array() });
       }
       // finding a user with same email address
-      let user = await Hostel_Applications.findOne({ email: req.body.email });
-      if (user) {
-        return res
-          .status(400)
-          .json({ success: success, err: "Sorry you have already applied" });
-      }
+      // let user = await Hostel_Applications.findOne({ email: req.body.email });
+      // if (user) {
+      //   return res
+      //     .status(400)
+      //     .json({ success: success, err: "Sorry you have already applied" });
+      // }
       // creating user
-      user = new Hostel_Applications({
+      const newUser = new Hostel_Applications({
         roll_no: req.body.roll_no,
         name: req.body.name,
         email: req.body.email,
@@ -98,7 +98,7 @@ router.post(
         discrepancy: req.body.discrepancy,
         TandC: req.body.TandC,
       });
-      const savedUser = await user.save();
+      const savedUser = await newUser.save();
       console.log("succss", savedUser);
       res.json({ savedUser });
     } catch (error) {
