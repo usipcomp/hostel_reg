@@ -113,7 +113,10 @@ const studentSchema = new Schema({
   dtu_email: {
     type: String,
   },
-  password: {
+  updatedHostelPassword: {
+    type: String,
+  },
+  defaultHostelPassword:{
     type: String,
   },
   currentSubjects: [

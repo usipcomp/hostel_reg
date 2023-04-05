@@ -22,9 +22,9 @@ db.on("open", () => {
   console.log("Database Connected");
 });
 app.use("/hostelreg/applications/auth", require("./routes/auth"));
-// app.post("/hostelreg/applications",);
 
 //Login
+app.use("/hostelreg/login",require("./routes/login"));
 
 app.listen(4000, () => {
   console.log("Listening on Port 4000");
