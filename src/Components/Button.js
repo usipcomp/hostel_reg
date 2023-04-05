@@ -11,6 +11,7 @@ function Button({
   rounded,
   wide,
   handleClick,
+  bgGreen,
   ...rest
 }) {
   const classes = className(
@@ -20,7 +21,8 @@ function Button({
       "bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 text-sm":
         primary,
       "bg-yellow-500 border-yellow-500 hover:bg-yellow-900": warning,
-      "bg-red-500 border-red-500 hover:bg-red-900": danger,
+      "bg-red-500 cursor-pointer hover:scale-105 duration-500 border-none":
+        danger,
       "bg-green-500 border-green-500 hover:bg-green-900": success,
       "bg-gray-500 border-gray-500 hover:bg-gray-900": secondary,
       "rounded-full": rounded,
@@ -31,12 +33,14 @@ function Button({
       "text-red-500 hover:bg-red-100": outline && danger,
       "text-gray-500 hover:bg-gray-100": outline && secondary,
       "w-full": wide,
+      "text-white cursor-pointer bg-[#006d77] p-2 border-none hover:scale-105 duration-500":
+        bgGreen,
     }
   );
 
   return (
     <button className={classes} onClick={() => handleClick()} {...rest}>
-      <div className="mx-auto">{children}</div>
+      <div className="mx-auto flex">{children}</div>
     </button>
   );
 }
