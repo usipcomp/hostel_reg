@@ -21,6 +21,14 @@ function InputField(props) {
     "my-2": true,
   });
 
+  let handleChange;
+
+  if (!props.handleChange) {
+    handleChange = () => {};
+  } else {
+    handleChange = props.handleChange;
+  }
+
   return (
     <div>
       <label
@@ -36,9 +44,10 @@ function InputField(props) {
         value={props.value}
         disabled={props.isDisabled}
         placeholder={props.placeholder}
+        required={props.required}
         accept="application/pdf"
         onChange={(e) => {
-          props.handleChange(e);
+          handleChange(e);
         }}
       ></input>
     </div>

@@ -27,6 +27,10 @@ app.use("/hostelreg/applications/auth", require("./routes/auth"));
 //Login
 app.use("/hostelreg/login", require("./routes/login"));
 
+//Hostels
+
+app.use("/hostels", require("./routes/hostel"));
+
 app.listen(4000, () => {
   console.log("Listening on Port 4000");
 });

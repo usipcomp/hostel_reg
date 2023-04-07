@@ -6,6 +6,7 @@ const ManageApplication = () => {
   const Links = [
     { value: "Open/Close Application", redirect: "/manageapplications" },
     { value: "Submitted Applications", redirect: "/submittedapplications" },
+    { value: "Manage Hostels", redirect: "/managehostels" },
   ];
   return (
     <div className="w-full min-h-screen h-fit bg-[#edf6f9]">

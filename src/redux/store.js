@@ -1,4 +1,4 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 
 import {
   persistStore,
@@ -13,14 +13,19 @@ import {
 import storage from "redux-persist/lib/storage";
 
 import userReducer from "./userRedux";
-
+import hostelReducer from "./hostelRedux";
 const persistConfig = {
   key: "main-root",
   version: 1,
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, userReducer);
+const rootReducer = combineReducers({
+  user: userReducer,
+  hostel: hostelReducer,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,

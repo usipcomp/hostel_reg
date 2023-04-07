@@ -22,7 +22,6 @@ router.post(
     // body("local_gaurdian_phone_no").isMobilePhone(),
   ],
   async (req, res) => {
-    console.log("req.body", req.body);
     try {
       // checking the req body data
       let success = false;
@@ -106,5 +105,14 @@ router.post(
     }
   }
 );
+
+router.get("/application", async (req, res) => {
+  try {
+    const foundApplications = await Hostel_Applications.find();
+    res.status(200).json(foundApplications);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 module.exports = router;

@@ -4,10 +4,13 @@ import classNames from "classnames";
 
 function Dropdown(props) {
   const [selectedValue, setSelectedValue] = useState(props.value);
-  const optionsList = props.options.map((option,index) => {
-    return <option key={index} value={option.value}>{option.label}</option>;
+  const optionsList = props.options.map((option, index) => {
+    return (
+      <option key={index} value={option.value}>
+        {option.label}
+      </option>
+    );
   });
-  console.log(selectedValue);
   const classes = classNames({
     "bg-gray-50": !props.isDisabled,
     "bg-gray-200": props.isDisabled,
@@ -37,7 +40,6 @@ function Dropdown(props) {
         id={props.id}
         className={classes}
         required
-        value={props.placeholder}
         disabled={props.isDisabled}
       >
         {optionsList}

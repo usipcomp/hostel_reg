@@ -1,5 +1,10 @@
 import axios from "axios";
 import { loginFailure, loginStart, loginSuccess } from "./userRedux";
+import {
+  getHostelFailure,
+  getHostelStart,
+  getHostelSuccess,
+} from "./hostelRedux";
 
 export const login = async (dispatch, user) => {
   dispatch(loginStart());
@@ -9,5 +14,15 @@ export const login = async (dispatch, user) => {
     dispatch(loginSuccess(res.data));
   } catch (err) {
     dispatch(loginFailure());
+  }
+};
+
+export const getHostels = async (dispatch) => {
+  dispatch(getHostelStart());
+  try {
+    const res = await axios.get("http://localhost:4000/hostels");
+    dispatch(getHostelSuccess(res.data));
+  } catch (err) {
+    dispatch(getHostelFailure());
   }
 };

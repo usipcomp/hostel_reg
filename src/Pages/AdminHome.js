@@ -6,6 +6,7 @@ const AdminHome = () => {
   const Links = [
     { value: "Open/Close Application", redirect: "/manageapplications" },
     { value: "Submitted Applications", redirect: "/submittedapplications" },
+    { value: "Manage Hostels", redirect: "/managehostels" },
   ];
 
   return (

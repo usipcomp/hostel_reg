@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import Navbar from "../Components/Navbar";
 
 function StudentHome() {
-  const user = useSelector((state) => state.currentUser);
+  const user = useSelector((state) => state.user.currentUser);
   const Links = [
     {
       value: "Application Status",

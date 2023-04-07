@@ -11,17 +11,20 @@ import { useSelector } from "react-redux";
 import StudentHome from "./Pages/StudentHome";
 import AdminHome from "./Pages/AdminHome";
 import ApplicationsList from "./Pages/ApplicationsList";
-import StudentApplicationView from "./Pages/StudentApplicationView";
 import ManageApplication from "./Pages/ManageApplication";
+import ManageHostels from "./Pages/ManageHostels";
+import NewHostel from "./Pages/NewHostel";
 
 function App() {
-  const user = useSelector((state) => state.currentUser);
+  const user = useSelector((state) => state.user.currentUser);
   let homeContent,
     AdminHomeContent,
     ApplicationsListContent,
     ManageApplicationContent,
     RegFormContent,
-    loginContent;
+    loginContent,
+    ManageHostelsContent,
+    NewHostelContent;
   if (!user) {
     homeContent = <Login></Login>;
     AdminHomeContent = <Login></Login>;
@@ -29,6 +32,8 @@ function App() {
     ManageApplicationContent = <Login></Login>;
     RegFormContent = <Login></Login>;
     loginContent = <Login></Login>;
+    ManageHostelsContent = <Login></Login>;
+    NewHostelContent = <Login></Login>;
   } else {
     homeContent = <StudentHome></StudentHome>;
     AdminHomeContent = <AdminHome></AdminHome>;
@@ -36,6 +41,8 @@ function App() {
     ManageApplicationContent = <ManageApplication></ManageApplication>;
     RegFormContent = <RegForm></RegForm>;
     loginContent = <StudentHome></StudentHome>;
+    ManageHostelsContent = <ManageHostels></ManageHostels>;
+    NewHostelContent = <NewHostel></NewHostel>;
   }
   return (
     <div>
@@ -53,6 +60,8 @@ function App() {
           ></Route>
           <Route path="/application" element={RegFormContent}></Route>
           <Route path="/" element={homeContent}></Route>
+          <Route path="/managehostels" element={ManageHostelsContent}></Route>
+          <Route path="/newhostel" element={NewHostelContent}></Route>
         </Routes>
       </Router>
     </div>

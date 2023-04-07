@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { logout } from "../redux/userRedux";
 
 function RegForm() {
-  const user = useSelector((state) => state.currentUser.student);
+  const user = useSelector((state) => state.user.currentUser.student);
 
   const genderOptions = [
     { label: "Male", value: "male" },

@@ -1,34 +1,52 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../Components/Button";
 import Navbar from "../Components/Navbar";
 import { MdOutlineDone } from "react-icons/md";
 import { GiCancel } from "react-icons/gi";
+import axios from "axios";
 
 const ApplicationsList = () => {
+  const [applications, setApplications] = useState([]);
+
+  useEffect(() => {
+    const getApplications = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:4000/hostelreg/applications/auth/application"
+        );
+        setApplications(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getApplications();
+  }, []);
+
   const Links = [
     { value: "Open/Close Application", redirect: "/manageapplications" },
     { value: "Submitted Applications", redirect: "/submittedapplications" },
+    { value: "Manage Hostels", redirect: "/managehostels" },
   ];
-  const applications = [
-    {
-      name: "Ayush Gupta",
-      roll: "2k21/ee/85",
-      applied_on: "26/01/2023",
-      app_id: 123123,
-    },
-    {
-      name: "Ayush Gupta",
-      roll: "2k21/ee/85",
-      applied_on: "26/01/2023",
-      app_id: 232342,
-    },
-    {
-      name: "Ayush Gupta",
-      roll: "2k21/ee/85",
-      applied_on: "26/01/2023",
-      app_id: 21312412,
-    },
-  ];
+  // const applications = [
+  //   {
+  //     name: "Ayush Gupta",
+  //     roll: "2k21/ee/85",
+  //     applied_on: "26/01/2023",
+  //     app_id: 123123,
+  //   },
+  //   {
+  //     name: "Ayush Gupta",
+  //     roll: "2k21/ee/85",
+  //     applied_on: "26/01/2023",
+  //     app_id: 232342,
+  //   },
+  //   {
+  //     name: "Ayush Gupta",
+  //     roll: "2k21/ee/85",
+  //     applied_on: "26/01/2023",
+  //     app_id: 21312412,
+  //   },
+  // ];
   const renderedApplications = applications.map((app) => {
     return (
       <div className="w-full h-fit bg-gray-200 p-4 rounded-xl my-4 flex justify-between shadow-lg hover:scale-105 duration-500 hover:bg-gray-300 cursor-pointer">
@@ -38,7 +56,7 @@ const ApplicationsList = () => {
               {app.name}
             </div>
             <div className="font-semibold text-gray-500 text-lg ml-2">
-              {app.roll}
+              {app.roll_no}
             </div>
           </div>
           <div className="text-gray-500">Applied On: {app.applied_on}</div>

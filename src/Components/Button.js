@@ -38,8 +38,15 @@ function Button({
     }
   );
 
+  let onClick;
+  if (handleClick) {
+    onClick = handleClick;
+  } else {
+    onClick = () => {};
+  }
+
   return (
-    <button className={classes} onClick={() => handleClick()} {...rest}>
+    <button className={classes} onClick={() => onClick()} {...rest}>
       <div className="mx-auto flex">{children}</div>
     </button>
   );

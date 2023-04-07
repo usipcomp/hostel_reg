@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
 
 const HostelSchema = new Schema({
-  HostelID: [{ type: Number }],
+  HostelID: { type: String },
   Name: { type: String },
   Type: {
     type: String,
@@ -15,3 +15,6 @@ const HostelSchema = new Schema({
   threeSAC: { type: Number },
   threeSNAC: { type: Number },
 });
+
+const Hostel = mongoose.model("Hostel", HostelSchema);
+module.exports = Hostel;
