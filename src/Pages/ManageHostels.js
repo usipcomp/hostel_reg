@@ -64,7 +64,7 @@ function ManageHostels() {
               {h.threeSNAC}
             </div>
           </div>
-          <div className="flex">
+          <div className="flex justify-end col-span-2">
             <Button danger>
               <RxCross2 className="my-auto mr-1"></RxCross2>Delete
             </Button>
