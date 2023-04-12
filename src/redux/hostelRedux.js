@@ -21,10 +21,29 @@ export const hostelSlice = createSlice({
       state.isFetching = false;
       state.error = true;
     },
+    // update hostel info
+    // updateHostel:(state,action)=>{
+    //   const {hID,oneS,twoS,threeSAC,threeSNAC,Type}= action.payload;
+    //   state.hostels = state.hostels.map((h)=>{
+    //     if(h.HostelID===hID){
+    //       if (oneS){newHostel_info.oneS = oneS}
+    //       if (twoS){newHostel_info.twoS = twoS}
+    //       if (threeSAC){newHostel_info.threeSAC = threeSAC}
+    //       if (threeSNAC){newHostel_info.threeSNAC = threeSNAC}
+    //       if (Type){newHostel_info.Type = Type}
+    //     }
+    //     return h;
+    //   })
+    // },
+    // remove hostel
+    deleteHostel:(state,action)=>{
+      const hID = action.payload;
+      state.hostels = state.hostels.filter((h)=>h.HostelID!==hID);
+    }
   },
 });
 
-export const { getHostelFailure, getHostelSuccess, getHostelStart } =
+export const { getHostelFailure, getHostelSuccess, getHostelStart,deleteHostel} =
   hostelSlice.actions;
 
 export default hostelSlice.reducer;

@@ -14,14 +14,22 @@ const ApplicationsList = () => {
         const res = await axios.get(
           "http://localhost:4000/hostelreg/applications/auth/application"
         );
+        // console.log(res.data)
         setApplications(res.data);
       } catch (err) {
-        console.log(err);
+        console.log(err); 
       }
     };
     getApplications();
   }, []);
-
+  const delete_app = async(id)=>{
+    const response = await fetch(`http://localhost:4000/hostelreg/applications/auth/application/${id}`,{
+      method:"DELETE",
+      // authtoken to authorise the admin, for that we need a middleware that can be done later.
+    });
+    setApplications(applications.filter((app)=>app._id!==id));
+    console.log(response);
+  }
   const Links = [
     { value: "Open/Close Application", redirect: "/manageapplications" },
     { value: "Submitted Applications", redirect: "/submittedapplications" },
@@ -47,9 +55,9 @@ const ApplicationsList = () => {
   //     app_id: 21312412,
   //   },
   // ];
-  const renderedApplications = applications.map((app) => {
+  const renderedApplications = applications.map((app,ind) => {
     return (
-      <div className="w-full h-fit bg-gray-200 p-4 rounded-xl my-4 flex justify-between shadow-lg hover:scale-105 duration-500 hover:bg-gray-300 cursor-pointer">
+      <div key={ind} className="w-full h-fit bg-gray-200 p-4 rounded-xl my-4 flex justify-between shadow-lg hover:scale-105 duration-500 hover:bg-gray-300 cursor-pointer">
         <div className="flex flex-col">
           <div className="flex">
             <div className="font-semibold text-gray-500 text-lg">
@@ -65,7 +73,7 @@ const ApplicationsList = () => {
           <Button bgGreen>
             <MdOutlineDone className="my-auto mr-2"></MdOutlineDone>Accept
           </Button>
-          <Button danger>
+          <Button handleClick={()=>{delete_app(app._id)}} danger>
             <GiCancel className="my-auto mr-2"></GiCancel>Reject
           </Button>
         </div>

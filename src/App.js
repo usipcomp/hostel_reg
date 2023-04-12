@@ -25,7 +25,7 @@ function App() {
     loginContent,
     ManageHostelsContent,
     NewHostelContent;
-  if (!user) {
+  if (user) {
     homeContent = <Login></Login>;
     AdminHomeContent = <Login></Login>;
     ApplicationsListContent = <Login></Login>;

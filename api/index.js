@@ -7,9 +7,8 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 
-dotenv.config();
+dotenv.config({path:__dirname+'/.env'});
 app.use(cors());
-
 mongoose.connect(process.env.MONGOOSE_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,

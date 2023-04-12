@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Navbar = (props) => {
   const dispatch = useDispatch();
-  const renderedLinks = props.Links.map(function (link) {
+  const renderedLinks = props.Links.map(function (link,ind) {
     return (
-      <Link to={link.redirect}>
+      <Link to={link.redirect} key={ind}>
         <div className="font-semibold text-xl p-2 cursor-pointer hover:bg-[#edf6f9] rounded-lg duration-500 hover:scale-105">
           {link.value}
         </div>

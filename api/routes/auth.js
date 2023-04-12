@@ -114,5 +114,20 @@ router.get("/application", async (req, res) => {
     res.status(500).json(err);
   }
 });
+router.delete("/application/:id", async (req, res) => {
+  try {
+    const app_id = req.params.id;
+    let app = await Hostel_Applications.find({_id:app_id});
+    if(!app){
+      res.status(400).send("User Does Not exists");
+    }
+    else{
+      app = await Hostel_Applications.findOneAndDelete({_id:app_id});
+      return res.status(200).json(app);
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 module.exports = router;

@@ -7,6 +7,7 @@ import { getHostels } from "../redux/apiCalls";
 import { RxCross2 } from "react-icons/rx";
 import { HiPencil } from "react-icons/hi";
 import { AiOutlinePlus } from "react-icons/ai";
+import { deleteHostel } from "../redux/hostelRedux";
 
 function ManageHostels() {
   const dispatch = useDispatch();
@@ -18,6 +19,27 @@ function ManageHostels() {
 
   console.log(hostel.hostels);
 
+  const delete_Hostel = async (id)=>{
+    const response = await fetch(`http://localhost:4000/hostels/${id}`,{
+      method:"DELETE",
+      // authtoken to authorise the admin, for that we need a middleware that can be done later.
+    });
+    dispatch(deleteHostel(id));
+  }
+  const update_Hostel = async (id)=>{
+    const response = await fetch(`http://localhost:4000/hostels/${id}`,{
+      method:"PUT",
+      // authtoken to authorise the admin, for that we need a middleware that can be done later.
+      body:JSON.stringify({
+        // oneS:req.body.oneS,
+        // twoS:req.body.twoS,
+        // threeSNAC:req.body.threeSNAC,
+        // threeSAC:req.body.threeSAC,
+        // Type:req.body.Type,
+      })
+    });
+    dispatch(update_Hostel(id));
+  }
   const Links = [
     { value: "Open/Close Application", redirect: "/manageapplications" },
     { value: "Submitted Applications", redirect: "/submittedapplications" },
@@ -65,7 +87,7 @@ function ManageHostels() {
             </div>
           </div>
           <div className="flex justify-end col-span-2">
-            <Button danger>
+            <Button handleClick={()=>{delete_Hostel(h.HostelID)}} danger>
               <RxCross2 className="my-auto mr-1"></RxCross2>Delete
             </Button>
             <Button bgGreen>
