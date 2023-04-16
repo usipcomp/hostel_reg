@@ -14,12 +14,14 @@ import ApplicationsList from "./Pages/ApplicationsList";
 import ManageApplication from "./Pages/ManageApplication";
 import ManageHostels from "./Pages/ManageHostels";
 import NewHostel from "./Pages/NewHostel";
+import StudentApplicationView from "./Pages/StudentApplicationView"
 
 function App() {
   const user = useSelector((state) => state.user.currentUser);
   let homeContent,
     AdminHomeContent,
     ApplicationsListContent,
+    ApplicationView,
     ManageApplicationContent,
     RegFormContent,
     loginContent,
@@ -39,6 +41,7 @@ function App() {
     AdminHomeContent = <AdminHome></AdminHome>;
     ApplicationsListContent = <ApplicationsList></ApplicationsList>;
     ManageApplicationContent = <ManageApplication></ManageApplication>;
+    ApplicationView = <StudentApplicationView></StudentApplicationView>
     RegFormContent = <RegForm></RegForm>;
     loginContent = <StudentHome></StudentHome>;
     ManageHostelsContent = <ManageHostels></ManageHostels>;
@@ -57,6 +60,10 @@ function App() {
           <Route
             path="/manageapplications"
             element={ManageApplicationContent}
+          ></Route>
+          <Route
+            path="/:id"
+            element={ApplicationView}
           ></Route>
           <Route path="/application" element={RegFormContent}></Route>
           <Route path="/" element={homeContent}></Route>

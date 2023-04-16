@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Button from "../Components/Button";
 import Navbar from "../Components/Navbar";
-import { MdOutlineDone } from "react-icons/md";
+import { MdOutlinePictureAsPdf } from "react-icons/md";
 import { GiCancel } from "react-icons/gi";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const ApplicationsList = () => {
   const [applications, setApplications] = useState([]);
@@ -22,9 +23,12 @@ const ApplicationsList = () => {
     };
     getApplications();
   }, []);
-  const delete_app = async(id)=>{
+  const remove_app = async(id)=>{
     const response = await fetch(`http://localhost:4000/hostelreg/applications/auth/application/${id}`,{
-      method:"DELETE",
+      method:"PUT",
+      body:JSON.stringify({
+        applicable:false,
+      })
       // authtoken to authorise the admin, for that we need a middleware that can be done later.
     });
     setApplications(applications.filter((app)=>app._id!==id));
@@ -56,6 +60,7 @@ const ApplicationsList = () => {
   //   },
   // ];
   const renderedApplications = applications.map((app,ind) => {
+    if(app.applicable===false) return <div key={ind}></div>
     return (
       <div key={ind} className="w-full h-fit bg-gray-200 p-4 rounded-xl my-4 flex justify-between shadow-lg hover:scale-105 duration-500 hover:bg-gray-300 cursor-pointer">
         <div className="flex flex-col">
@@ -70,10 +75,10 @@ const ApplicationsList = () => {
           <div className="text-gray-500">Applied On: {app.applied_on}</div>
         </div>
         <div className="flex">
-          <Button bgGreen>
-            <MdOutlineDone className="my-auto mr-2"></MdOutlineDone>Accept
-          </Button>
-          <Button handleClick={()=>{delete_app(app._id)}} danger>
+          <Link to={`/${app._id}`} className="text-white self-center cursor-pointer bg-[#006d77] p-2 border-none hover:scale-105 duration-500 h-10 mx-auto flex">
+              <MdOutlinePictureAsPdf className="mr-2"></MdOutlinePictureAsPdf><div>PDF</div>
+          </Link>
+          <Button handleClick={()=>{remove_app(app._id)}} danger>
             <GiCancel className="my-auto mr-2"></GiCancel>Reject
           </Button>
         </div>

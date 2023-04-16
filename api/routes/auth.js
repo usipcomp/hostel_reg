@@ -114,7 +114,21 @@ router.get("/application", async (req, res) => {
     res.status(500).json(err);
   }
 });
-router.delete("/application/:id", async (req, res) => {
+router.get("/application/:id", async (req, res) => {
+  try {
+    const app_id = req.params.id;
+    const foundApplication = await Hostel_Applications.find({_id:app_id});
+    if(!foundApplication){
+      res.status(404).json({message:"Not found"});
+    }
+    else{
+      res.status(200).json(foundApplication);
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+router.put("/application/:id", async (req, res) => {
   try {
     const app_id = req.params.id;
     let app = await Hostel_Applications.find({_id:app_id});
@@ -122,7 +136,9 @@ router.delete("/application/:id", async (req, res) => {
       res.status(400).send("User Does Not exists");
     }
     else{
-      app = await Hostel_Applications.findOneAndDelete({_id:app_id});
+      const newUser = {};
+      if(!req.body.applicable) newUser.applicable = false;
+      app = await Hostel_Applications.findByIdAndUpdate({_id:app_id},{$set:newUser},{new:true});
       return res.status(200).json(app);
     }
   } catch (err) {
