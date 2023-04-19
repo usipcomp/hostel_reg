@@ -1,52 +1,48 @@
-import React, { useEffect } from "react";
+import React, { useEffect,  useState } from "react";
 import Navbar from "../Components/Navbar";
 import Button from "../Components/Button";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getHostels } from "../redux/apiCalls";
-import { RxCross2 } from "react-icons/rx";
-import { HiPencil } from "react-icons/hi";
+// import { HiPencil } from "react-icons/hi";
 import { AiOutlinePlus } from "react-icons/ai";
-import { deleteHostel } from "../redux/hostelRedux";
+import InputField from "../Components/InputField";
+import Dropdown from "../Components/Dropdown"; 
+import SingleHostelInfo from "./SingleHostelInfo";
+import axios from "axios";
 
 function ManageHostels() {
   const dispatch = useDispatch();
   const hostel = useSelector((state) => state.hostel);
-
+  // const [updatehostel, setUpdatehostel] = useState({ HostelID: "", Name: "", Type: "", oneS: 0, twoS: 0, threeSAC:0, threeSNAC: 0 });
+  const [prevID, setPrevID] = useState('');
+  const [toggleButton, setToggleButton] = useState(false);
   useEffect(() => {
     getHostels(dispatch);
   }, [dispatch]);
 
-  console.log(hostel.hostels);
-
-  const delete_Hostel = async (id)=>{
-    const response = await fetch(`http://localhost:4000/hostels/${id}`,{
-      method:"DELETE",
-      // authtoken to authorise the admin, for that we need a middleware that can be done later.
-    });
-    dispatch(deleteHostel(id));
+  const update_hostel_info = (hostelInfo) => {
+    setToggleButton(!toggleButton);
+    setPrevID(hostelInfo.HostelID);
+    // setUpdatehostel({ HostelID: hostelInfo.HostelID, Name: hostelInfo.Name, Type: hostelInfo.Type, oneS: hostelInfo.oneS, twoS: hostelInfo.twoS, threeSAC: hostelInfo.threeSAC, threeSNAC: hostelInfo.threeSNAC })
   }
-  const update_Hostel = async (id)=>{
-    const response = await fetch(`http://localhost:4000/hostels/${id}`,{
-      method:"PUT",
-      // authtoken to authorise the admin, for that we need a middleware that can be done later.
-      body:JSON.stringify({
-        // oneS:req.body.oneS,
-        // twoS:req.body.twoS,
-        // threeSNAC:req.body.threeSNAC,
-        // threeSAC:req.body.threeSAC,
-        // Type:req.body.Type,
-      })
-    });
-    dispatch(update_Hostel(id));
+  const update_Hostel = async (event) => {
+    event.preventDefault();
+    let tempFormData = {};
+    tempFormData["PrevID"] = prevID;
+    for (let i = 0; i < event.target.length; i++) {
+      tempFormData[event.target[i].id] = event.target[i].value;
+    }
+    const res = await axios.put("http://localhost:4000/hostels", tempFormData);
+    setToggleButton(!toggleButton);
+    getHostels(dispatch)
   }
   const Links = [
     { value: "Open/Close Application", redirect: "/manageapplications" },
     { value: "Submitted Applications", redirect: "/submittedapplications" },
     { value: "Manage Hostels", redirect: "/managehostels" },
   ];
-
-  const renderedHostels = hostel.hostels.map((h) => {
+  const renderedHostels = hostel.hostels.map((h, ind) => {
     let gender;
     if (h.Type === "G") {
       gender = "Girls";
@@ -54,66 +50,112 @@ function ManageHostels() {
       gender = "Boys";
     }
     return (
-      <div className="p-6 bg-white m-4 rounded-xl hover:bg-gray-200 cursor-pointer duration-500 hover:scale-105">
-        <div className="flex">
-          <div className="font-semibold">Name</div>
-          <div className="ml-2 text-gray-500 font-semibold">{h.Name}</div>
-        </div>
-        <div className="flex">
-          <div className="font-semibold">Hostel ID</div>
-          <div className="ml-2 text-gray-500 font-semibold">{h.HostelID}</div>
-        </div>
-        <div className="flex">
-          <div className="font-semibold">Type</div>
-          <div className="ml-2 text-gray-500 font-semibold">{gender}</div>
-        </div>
-        <div className="grid grid-cols-2">
-          <div className="flex">
-            <div className="font-semibold">1-Seater Beds</div>
-            <div className="ml-2 text-gray-500 font-semibold">{h.oneS}</div>
-          </div>
-          <div className="flex">
-            <div className="font-semibold">2-Seater Beds</div>
-            <div className="ml-2 text-gray-500 font-semibold">{h.twoS}</div>
-          </div>
-          <div className="flex">
-            <div className="font-semibold">3-Seater Beds (AC)</div>
-            <div className="ml-2 text-gray-500 font-semibold">{h.threeSAC}</div>
-          </div>
-          <div className="flex">
-            <div className="font-semibold">3-Seater Beds (Non-AC)</div>
-            <div className="ml-2 text-gray-500 font-semibold">
-              {h.threeSNAC}
-            </div>
-          </div>
-          <div className="flex justify-end col-span-2">
-            <Button handleClick={()=>{delete_Hostel(h.HostelID)}} danger>
-              <RxCross2 className="my-auto mr-1"></RxCross2>Delete
-            </Button>
-            <Button bgGreen>
-              <HiPencil className="my-auto mr-1"></HiPencil>Edit
-            </Button>
-          </div>
-        </div>
-      </div>
+      <SingleHostelInfo h={h} gender={gender} key={ind} update_hostel_info={update_hostel_info} />
     );
   });
-
+  const options=[
+    { label: "Boys", value: "B" },
+    { label: "Girls", value: "G" },
+  ]
   return (
-    <div className="w-full min-h-screen h-fit bg-[#edf6f9]">
-      <Navbar Links={Links}></Navbar>
-      <div className="w-full flex justify-center py-10">
-        <Link to="/newhostel">
-          <Button wide bgGreen handleClick={() => {}}>
-            <AiOutlinePlus className="my-auto mr-2"></AiOutlinePlus>
-            New Hostel
-          </Button>
-        </Link>
+    <>
+      <div className="w-full min-h-screen h-fit bg-[#edf6f9]">
+        <Navbar Links={Links}></Navbar>
+
+        {toggleButton && <div id="authentication-modal" tabIndex="-1" aria-hidden="true" className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none bg-gray-600/75">
+          <div className="relative w-full max-w-md max-h-full">
+
+            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <button type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" onClick={() => { setToggleButton(!toggleButton) }}>
+                <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                <span className="sr-only">Close modal</span>
+              </button>
+              <div className="px-6 py-6 lg:px-8 w-full">
+                <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">Edit</h3>
+                <form className="w-1/1 mx-auto my-10" onSubmit={(event)=>update_Hostel(event)}>
+                  <InputField
+                    name="Name"
+                    id="Name"
+                    type="text"
+                    placeholder="A.P.J. Abdul Kalam Hostel"
+                    label="Hostel Name"
+                    required
+                  ></InputField>
+
+                  <div className="w-full flex gap-20">
+                    <InputField
+                      name="HostelID"
+                      id="HostelID"
+                      type="text"
+                      placeholder="A1"
+                      label="Hostel ID"
+                      required
+                    ></InputField>
+                    <Dropdown
+                      label="Type"
+                      name="Type"
+                      placeholder="Boys/Girls"
+                      id="Type"
+                      options={[
+                        { label: "Boys", value: "B" },
+                        { label: "Girls", value: "G" },
+                      ]}
+                    ></Dropdown>
+                    
+                  </div>
+                  <hr className="my-4"></hr>
+                  <h3 className="font-semibold text-2xl my-4">Number of Beds</h3>
+                  <div className="flex w-full gap-2 my-3">
+                    <InputField
+                      name="oneS"
+                      label="One Seater"
+                      type="number"
+                      id="oneS"
+                      required
+                    ></InputField>
+                    <InputField
+                      name="twoS"
+                      label="Two Seater"
+                      type="number"
+                      id="twoS"
+                      required
+                    ></InputField>
+                    <InputField
+                      name="threeSAC"
+                      label="Three Seater (AC)"
+                      type="number"
+                      id="threeSAC"
+                      required
+                    ></InputField>
+                    <InputField
+                      name="threeSNAC"
+                      label="Three Seater (Non-AC)"
+                      type="number"
+                      id="threeSNAC"
+                      required
+                    ></InputField>
+                  </div>
+                  <Button bgGreen wide>
+                    Submit
+                  </Button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>}
+        <div className="w-full flex justify-center py-10">
+          <Link to="/newhostel">
+            <Button wide bgGreen handleClick={() => { }}>
+              <AiOutlinePlus className="my-auto mr-2"></AiOutlinePlus>
+              New Hostel
+            </Button>
+          </Link>
+        </div>
+        <div className="flex w-full">
+          <div className="w-1/2 mx-auto">{renderedHostels}</div>
+        </div>
       </div>
-      <div className="flex w-full">
-        <div className="w-1/2 mx-auto">{renderedHostels}</div>
-      </div>
-    </div>
+    </>
   );
 }
 

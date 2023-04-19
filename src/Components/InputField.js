@@ -38,6 +38,7 @@ function InputField(props) {
         {props.label}
       </label>
       <input
+        name={props.name}
         type={props.type}
         id={props.id}
         className={classes}

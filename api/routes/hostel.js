@@ -35,32 +35,36 @@ router.post(
     }
   }
 );
-router.delete("/:id",async(req,res)=>{
+// router.delete("/:id",async(req,res)=>{
+//   try {
+//     let hostel_id = req.params.id;
+//     let hostel_info = await Hostel.find({HostelID:hostel_id});
+//     if(!hostel_info){
+//       return res.status(400).json(message,"Bad request");
+//     }
+//     else{
+//       hostel_info = await Hostel.deleteOne({HostelID:hostel_id});
+//       res.status(204).send("hostel info deleted successfully");
+//     }
+//   } catch (error) {
+//     res.status(500).send("Internal Server Error");
+//   }
+// });
+router.put("/",async(req,res)=>{
   try {
-    let hostel_id = req.params.id;
-    let hostel_info = await Hostel.find({HostelID:hostel_id});
-    if(!hostel_info){
-      return res.status(400).json(message,"Bad request");
-    }
-    else{
-      hostel_info = await Hostel.deleteOne({HostelID:hostel_id});
-      res.status(204).send("hostel info deleted successfully");
-    }
-  } catch (error) {
-    res.status(500).send("Internal Server Error");
-  }
-});
-router.put("/:id",async(req,res)=>{
-  try {
-    const hostel_id = req.params.id;
-    const {oneS,twoS,threeSAC,threeSNAC,Type} = req.body;
+    console.log(req.body);
+    const {PrevID,HostelID,Name,oneS,twoS,threeSAC,threeSNAC,Type} = req.body;
     const newHostel_info = {};
+
+    if (HostelID){newHostel_info.HostelID = HostelID}
+    if (Name){newHostel_info.Name = Name}
     if (oneS){newHostel_info.oneS = oneS}
     if (twoS){newHostel_info.twoS = twoS}
     if (threeSAC){newHostel_info.threeSAC = threeSAC}
     if (threeSNAC){newHostel_info.threeSNAC = threeSNAC}
     if (Type){newHostel_info.Type = Type}
-    const hostel_info = await Hostel.findByIdAndUpdate({HostelID:hostel_id},{$set:newHostel_info},{new:true});
+    console.log(newHostel_info)
+    const hostel_info = await Hostel.findOneAndUpdate({HostelID:PrevID},{$set:newHostel_info},{new:true});
       res.status(204).json({msg:"hostel info updated successfully",newHostel:hostel_info});
   } catch (error) {
     res.status(500).send("Internal Server Error");
