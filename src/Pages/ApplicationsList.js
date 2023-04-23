@@ -5,18 +5,20 @@ import { MdOutlinePictureAsPdf } from "react-icons/md";
 import { GiCancel } from "react-icons/gi";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import InputField from "../Components/InputField";
+import Dropdown from "../Components/Dropdown";
 
 const ApplicationsList = () => {
   const [applications, setApplications] = useState([]);
-
+  const [toggleButton, setToggleButton] = useState(false)
   useEffect(() => {
     const getApplications = async () => {
       try {
         const res = await axios.get(
           "http://localhost:4000/hostelreg/applications/auth/application"
         );
-        // console.log(res.data)
-        setApplications(res.data);
+        const array = Array.from(res.data).filter((app)=>app.applicable!==false);
+        setApplications(array);
       } catch (err) {
         console.log(err); 
       }
@@ -28,11 +30,34 @@ const ApplicationsList = () => {
       method:"PUT",
       body:JSON.stringify({
         applicable:false,
+        
       })
       // authtoken to authorise the admin, for that we need a middleware that can be done later.
     });
-    setApplications(applications.filter((app)=>app._id!==id));
+    let array = applications.filter((app)=>app._id!==id)
+    setApplications(array);
     console.log(response);
+  }
+  const runAlgo = async(event)=>{
+    event.preventDefault();
+    let array = [];
+    applications.forEach(element => {
+      array.push(element)
+    });
+    let fromdate = (event.target[0].id==="from_date")?(event.target[0].value):"01/01/2023";
+    let todate = (event.target[1].id==="to_date")?(event.target[1].value):"01/01/2023";
+    const response = await fetch("http://localhost:4000/hostels/allocate",{
+      method:"POST",
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        applications:array,
+        from:fromdate,
+        to:todate,
+      }),
+    });
+    console.log(response)
   }
   const Links = [
     { value: "Open/Close Application", redirect: "/manageapplications" },
@@ -60,7 +85,6 @@ const ApplicationsList = () => {
   //   },
   // ];
   const renderedApplications = applications.map((app,ind) => {
-    if(app.applicable===false) return <div key={ind}></div>
     return (
       <div key={ind} className="w-full h-fit bg-gray-200 p-4 rounded-xl my-4 flex justify-between shadow-lg hover:scale-105 duration-500 hover:bg-gray-300 cursor-pointer">
         <div className="flex flex-col">
@@ -88,11 +112,49 @@ const ApplicationsList = () => {
   return (
     <div className="h-fit min-h-screen bg-[#edf6f9] w-full">
       <Navbar Links={Links}></Navbar>
+      {toggleButton && <div id="authentication-modal" tabIndex="-1" aria-hidden="true" className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none bg-gray-600/75">
+          <div className="relative w-full max-w-md max-h-full">
+
+            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <button type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" onClick={() => { setToggleButton(!toggleButton) }}>
+                <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                <span className="sr-only">Close modal</span>
+              </button>
+              <div className="px-6 py-6 lg:px-8 w-full">
+                <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">Edit</h3>
+                <form className="w-1/1 mx-auto my-10" onSubmit={(event)=>runAlgo(event)}>
+                  <InputField
+                    name="from_date"
+                    id="from_date"
+                    type="date"
+                    label="From Date"
+                    required
+                  ></InputField>
+                  <InputField
+                    name="to_date"
+                    id="to_date"
+                    type="date"
+                    label="To Date"
+                    required
+                  ></InputField>
+
+                  
+                  <Button bgGreen wide>
+                    Submit
+                  </Button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>}
       <div className="w-full h-full flex">
         <div className="h-full w-2/3 mx-auto">{renderedApplications}</div>
       </div>
       <div className="flex w-full justify-center">
-        <Button bgGreen>Run Allotment Algorithm</Button>
+        <Button handleClick={()=>{
+          setToggleButton(!toggleButton);
+          
+          }} bgGreen>Run Allotment Algorithm</Button>
       </div>
     </div>
   );

@@ -21,7 +21,7 @@ function Login() {
   const handleLogin = async () => {
     login(dispatch, { roll_no: rollNo, password: password });
   };
-  console.log(user);
+  // console.log(user);
 
   let error;
   if (user.error) {

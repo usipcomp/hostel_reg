@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
 
@@ -12,3 +12,5 @@ const OccupancyHistorySchema = Schema({
   ToDate: { type: Date },
   ApplicationNumber: { type: Number },
 });
+const Occupancy = mongoose.model("occupancy_history",OccupancyHistorySchema);
+module.exports = Occupancy;

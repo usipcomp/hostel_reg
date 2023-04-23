@@ -121,16 +121,18 @@ const studentSchema = new Schema({
   },
   currentSubjects: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "subjectSchema",
+      // type: Schema.Types.ObjectId,
+      type:Array
+      // ref: "subjectSchema",
     },
   ],
   sessions: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "sessionSchema",
+      // type: Schema.Types.ObjectId,
+      type:Array
+      // ref: "sessionSchema",
     },
   ],
 });
-const Student =  mongoose.model("Student", studentSchema)
+const Student =  mongoose.model("students", studentSchema)
 module.exports = Student;

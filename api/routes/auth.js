@@ -40,6 +40,7 @@ router.post(
       // }
       // creating user
       const newUser = new Hostel_Applications({
+        applicable:req.body.applicable,
         roll_no: req.body.roll_no,
         name: req.body.name,
         email: req.body.email,
@@ -98,7 +99,7 @@ router.post(
         TandC: req.body.TandC,
       });
       const savedUser = await newUser.save();
-      console.log("succss", savedUser);
+      console.log("success", savedUser);
       res.json({ savedUser });
     } catch (error) {
       console.error(error.message, "Something went wrong");

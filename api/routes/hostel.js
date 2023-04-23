@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const Hostel = require("../Models/Hostels");
+const Beds = require("../Models/Beds");
+const Occupancy = require("../Models/OccupancyHistory");
 
 router.post(
   "/",
@@ -78,5 +80,43 @@ router.get("/", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
+router.post("/allocate",async(req,res)=>{
+  try {
+    const {applications,from,to} = req.body;
+    const total_apps = applications.length;
+    // console.log(from,to,applications)
+    // console.log(req.body)
+    const bedIndfo = await Beds.find({Occupancy:false});
+    console.log(bedIndfo);
+    const total_beds = bedIndfo.length;
+    let pointer1 = 0;
+    let pointer2 = 0;
+    while(pointer1<total_apps && pointer2<total_beds){
+      let newAllot = {};
+      if(applications[pointer1].year_of_admission===2021){
+        newAllot.ApplicationID = 32412;
+        newAllot.Occupancy = true;
+        console.log(newAllot)
+        const newAllotment = await Beds.findOneAndUpdate({Occupancy:false},{$set:newAllot},{new:true});
+        console.log(newAllotment);
+        const newOccupancy = await Occupancy.create({
+          BedID:newAllotment.BedID,
+          StudentRollNo:applications[pointer1].roll_no,
+          StudentYear:applications[pointer1].year_of_admission,
+          FromDate:from,
+          ToDate:to,
+          ApplicationNumber:32412
+        })
+        pointer1++;
+        pointer2++;
+      }
+      else{
+        pointer1++;
+      }
+    }
+    res.status(200).send("got the data")
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+})
 module.exports = router;

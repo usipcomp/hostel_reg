@@ -50,7 +50,7 @@ function RegForm() {
     event.preventDefault();
 
     let tempFormData = {};
-
+    tempFormData["applicable"] = true;
     for (let i = 0; i < event.target.length; i++) {
       if (event.target[i].type === "file" && event.target[i].files.length) {
         tempFormData[event.target[i].id] = event.target[i].files[0].name;
@@ -109,8 +109,8 @@ function RegForm() {
               id="email"
               label="Email"
               type="text"
-              isDisabled
-              value={user.email}
+              // isDisabled/
+              // value={user.email}
             ></InputField>
             <Dropdown
               options={genderOptions}
@@ -124,8 +124,8 @@ function RegForm() {
               label="Mobile Number"
               type="number"
               id="phone_no"
-              isDisabled
-              value={user.phone}
+              // isDisabled
+              // value={user.phone}
             ></InputField>
             <Dropdown
               options={bloodGroupOptions}

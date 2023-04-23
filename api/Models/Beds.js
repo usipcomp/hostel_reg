@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose")
 
 const { Schema } = mongoose;
 
@@ -15,3 +15,5 @@ const BedSchema = Schema({
   Floor: { type: Number },
   ApplicationID: { type: Number },
 });
+const Beds = mongoose.model("beds",BedSchema)
+module.exports = Beds;

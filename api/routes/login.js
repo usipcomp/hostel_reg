@@ -4,7 +4,8 @@ const { body, validationResult } = require("express-validator");
 const Student = require("../Models/Student");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-console.log(process.env.JWT_SECRET);
+// console.log(process.env.JWT_SECRET);
+const JWT_SECRET = "mainhujian"
 
 router.post(
   "/",
@@ -24,7 +25,8 @@ router.post(
     const { roll_no, password } = req.body;
     console.log(req.body);
     try {
-      let user = await Student.findOne({ roll_no });
+      let user = await Student.findOne({roll_no:roll_no});
+      console.log(user)
       if (!user) {
         return res
           .status(400)
@@ -36,7 +38,7 @@ router.post(
           user: user,
         };
         success = true;
-        const authToken = jwt.sign(data, process.env.JWT_SECRET);
+        const authToken = jwt.sign(data, JWT_SECRET);
         return res.json({ success, student: user, authToken: authToken });
       }
 
@@ -54,7 +56,7 @@ router.post(
         user: user,
       };
       success = true;
-      const authToken = jwt.sign(data, process.env.JWT_SECRET);
+      const authToken = jwt.sign(data, JWT_SECRET);
       return res.json({ success, student: user, authToken: authToken });
     } catch (error) {
       console.error(error.message);
