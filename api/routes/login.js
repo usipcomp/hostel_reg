@@ -4,6 +4,7 @@ const { body, validationResult } = require("express-validator");
 const Student = require("../Models/Student");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Admins = require("../Models/Admins");
 // console.log(process.env.JWT_SECRET);
 const JWT_SECRET = "mainhujian"
 
@@ -64,7 +65,35 @@ router.post(
     }
   }
 );
+router.post("/admin",
+  [
+    body("password", "Password cannot be blank").exists(),
+  ],
+  async(req,res)=>{
+    const error = validationResult(req);
+    if(!error.isEmpty()){
+      return res.status(400).json({success:false,errors:error.array()});
+    }
+    const adminID = req.adminID;
+    const password = req.password;
+    try {
+      const getAdmin = Admins.findOne({adminID:adminID});
+      if(!getAdmin){
+        return res.status(404).json({success:false,message:"Admin not found!"});
+      }
+      else if(getAdmin.password===password){
+        const authToken = jwt.sign("admin444",JWT_SECRET);
+        return res.status(200).json({success:true,authToken:authToken});
+      }
+      else{
+        return res.status(400).json({success:false,message:"Invalid Credentials"});
+      }
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send("Internal Server Error");
+    }
 
+})
 router.post(
   "/updatePassword/:id",
   [

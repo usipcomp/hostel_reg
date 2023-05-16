@@ -14,7 +14,9 @@ import ApplicationsList from "./Pages/ApplicationsList";
 import ManageApplication from "./Pages/ManageApplication";
 import ManageHostels from "./Pages/ManageHostels";
 import NewHostel from "./Pages/NewHostel";
+import AdminLogin from "./Pages/AdminLogin"
 import StudentApplicationView from "./Pages/StudentApplicationView"
+import RejectedApplications from "./Pages/RejectedApplications";
 
 function App() {
   const user = useSelector((state) => state.user.currentUser);
@@ -26,16 +28,19 @@ function App() {
     RegFormContent,
     loginContent,
     ManageHostelsContent,
+    rejectedapplications,
     NewHostelContent;
+  console.log(user);
   if (!user) {
     homeContent = <Login></Login>;
-    AdminHomeContent = <Login></Login>;
-    ApplicationsListContent = <Login></Login>;
-    ManageApplicationContent = <Login></Login>;
+    AdminHomeContent = <AdminLogin></AdminLogin>;
+    ApplicationsListContent = <AdminLogin></AdminLogin>;
+    ManageApplicationContent = <AdminLogin></AdminLogin>;
     RegFormContent = <Login></Login>;
     loginContent = <Login></Login>;
-    ManageHostelsContent = <Login></Login>;
-    NewHostelContent = <Login></Login>;
+    ManageHostelsContent = <AdminLogin></AdminLogin>;
+    NewHostelContent = <AdminLogin></AdminLogin>;
+    rejectedapplications = <RejectedApplications></RejectedApplications>
   } else {
     homeContent = <StudentHome></StudentHome>;
     AdminHomeContent = <AdminHome></AdminHome>;
@@ -46,6 +51,7 @@ function App() {
     loginContent = <StudentHome></StudentHome>;
     ManageHostelsContent = <ManageHostels></ManageHostels>;
     NewHostelContent = <NewHostel></NewHostel>;
+    rejectedapplications = <RejectedApplications></RejectedApplications>
   }
   return (
     <div>
@@ -69,6 +75,7 @@ function App() {
           <Route path="/" element={homeContent}></Route>
           <Route path="/managehostels" element={ManageHostelsContent}></Route>
           <Route path="/newhostel" element={NewHostelContent}></Route>
+          <Route path="/rejected_applications" element={rejectedapplications}></Route>
         </Routes>
       </Router>
     </div>

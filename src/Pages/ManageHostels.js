@@ -40,6 +40,7 @@ function ManageHostels() {
   const Links = [
     { value: "Open/Close Application", redirect: "/manageapplications" },
     { value: "Submitted Applications", redirect: "/submittedapplications" },
+    { value: "Rejected Application", redirect: "/rejected_applications" },
     { value: "Manage Hostels", redirect: "/managehostels" },
   ];
   const renderedHostels = hostel.hostels.map((h, ind) => {

@@ -1,19 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Page, Text, View, Document,PDFViewer, StyleSheet } from '@react-pdf/renderer';
+import { Page, Text, View, Document,PDFViewer,Font, StyleSheet } from '@react-pdf/renderer';
 
 // Create styles
 const styles = StyleSheet.create({
   page: {
     flexDirection: 'row',
-    backgroundColor: '#E4E4E4'
+    backgroundColor: '#E4E4E4',
+    fontSize:"12px"
   },
-  section: {
-    margin: 10,
-    padding: 10,
-    flexGrow: 1
+  subSection: {
+    margin: 5,
+    padding: 5,
+    fontWeight:'normal',
+  },
+  section:{
+    margin:5,
+    padding: 5,
+    fontWeight:'normal',
+    flexGrow:1,
+    fontSize:"10px",
   }
 });
+Font.register({ fontStyle: 'normal', fontWeight: 'normal' });
+
 const StudentApplicationView = () => {
     const {id} = useParams();
     const [application, setApplication] = useState();
@@ -27,7 +37,6 @@ const StudentApplicationView = () => {
                 });
                 const json = await resp.json();
                 setApplication(json[0]);
-                console.log(json[0])
             }
             catch(err){
                 console.log(err)
@@ -39,16 +48,26 @@ const StudentApplicationView = () => {
         return (
             <div>
                 {/* this is the complete view of the student application */}
-                <div className="stud_app" style={{width:"100%",height:"100vh"}}>
-                    <PDFViewer style={{width:"100%",height:"100%"}}>
+                <div className="stud_app" style={{width:"100%",height:"100vh",fontSize:"small"}}>
+                    <PDFViewer style={{width:"100%",height:"100%",fontSize:'small'}}>
                     <Document>
                         <Page size="A4" style={styles.page}>
-                        <View style={styles.section}>
-                            <Text>{application.name}</Text>
-                        </View>
-                        <View style={styles.section}>
-                            <Text>{application.roll_no}</Text>
-                        </View>
+                            <View style={styles.section}>
+                                <View style={styles.subSection}>
+                                    <Text>DELHI TECHNOLOGICAL UNIVERSITY</Text>
+                                    <Text>{`(Formerly Delhi College of Engineering)`}</Text>
+                                    <Text>{`Established under Govt. of Delhi Act 6 of 2009`}</Text>
+                                </View>
+                                <View style={styles.subSection}>
+                                    <Text>DELHI TECHNOLOGICAL UNIVERSITY</Text>
+                                    <Text>{`(Formerly Delhi College of Engineering)`}</Text>
+                                    <Text>{`Established under Govt. of Delhi Act 6 of 2009`}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.section}>
+                                <View style={styles.subSection}></View>
+                                <Text>{application.roll_no}</Text>
+                            </View>
                         </Page>
                     </Document>
                     </PDFViewer>

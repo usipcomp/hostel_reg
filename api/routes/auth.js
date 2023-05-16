@@ -138,7 +138,14 @@ router.put("/application/:id", async (req, res) => {
     }
     else{
       const newUser = {};
-      if(!req.body.applicable) newUser.applicable = false;
+      if(!req.body.applicable){
+        newUser.applicable = false;
+        console.log("this is false value")
+      }
+      else{
+        newUser.applicable = true;
+        console.log("this is true value")
+      }
       app = await Hostel_Applications.findByIdAndUpdate({_id:app_id},{$set:newUser},{new:true});
       return res.status(200).json(app);
     }
