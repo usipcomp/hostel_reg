@@ -17,9 +17,36 @@ import NewHostel from "./Pages/NewHostel";
 import AdminLogin from "./Pages/AdminLogin"
 import StudentApplicationView from "./Pages/StudentApplicationView"
 import RejectedApplications from "./Pages/RejectedApplications";
+import AdminAppStatus from "./Pages/AdminAppStatus";
+import StudentAppStatus from "./Pages/StudentAppStatus";
+import OccupancyHistoryStudent from "./Pages/OccupancyHistoryStudent";
+import Navbar from "./Components/Navbar";
+import "./App.css"
 
 function App() {
   const user = useSelector((state) => state.user.currentUser);
+  
+  let Links=[]
+  if(user && user.user!=="admin"){
+    Links = [
+      {
+        value: "Application Status",
+        redirect: "/student_application_status",
+      },
+      { value: "Occupancy History", redirect: "/occupancyhistory" },
+      { value: "New Application", redirect: "/application" },
+      { value: "Change Password", redirect: "/changepassword" },
+    ];
+  }
+  else{
+  Links = [
+      { value: "Open/Close Application", redirect: "/manageapplications" },
+      { value: "Submitted Applications", redirect: "/submittedapplications" },
+      { value: "Rejected Application", redirect: "/rejected_applications" },
+      { value: "Manage Hostels", redirect: "/managehostels" },
+      { value: "Application Status", redirect: "/admin_application_status" },
+    ];
+  }
   let homeContent,
     AdminHomeContent,
     ApplicationsListContent,
@@ -29,8 +56,11 @@ function App() {
     loginContent,
     ManageHostelsContent,
     rejectedapplications,
+    AdminApplicationStatus,
+    StudentApplicationStatus,
+    StudentOccupancyHistory,
     NewHostelContent;
-  console.log(user);
+    console.log(user);
   if (!user) {
     homeContent = <Login></Login>;
     AdminHomeContent = <AdminLogin></AdminLogin>;
@@ -40,7 +70,11 @@ function App() {
     loginContent = <Login></Login>;
     ManageHostelsContent = <AdminLogin></AdminLogin>;
     NewHostelContent = <AdminLogin></AdminLogin>;
-    rejectedapplications = <RejectedApplications></RejectedApplications>
+    rejectedapplications =  <AdminLogin></AdminLogin>;
+    AdminApplicationStatus =  <AdminLogin></AdminLogin>;
+    StudentApplicationStatus = <Login></Login>
+    StudentOccupancyHistory = <Login></Login>
+    
   } else {
     homeContent = <StudentHome></StudentHome>;
     AdminHomeContent = <AdminHome></AdminHome>;
@@ -52,10 +86,14 @@ function App() {
     ManageHostelsContent = <ManageHostels></ManageHostels>;
     NewHostelContent = <NewHostel></NewHostel>;
     rejectedapplications = <RejectedApplications></RejectedApplications>
+    AdminApplicationStatus = <AdminAppStatus></AdminAppStatus>
+    StudentApplicationStatus = <StudentAppStatus></StudentAppStatus>
+    StudentOccupancyHistory = <OccupancyHistoryStudent></OccupancyHistoryStudent>
   }
   return (
     <div>
       <Router>
+        {user?<Navbar Links={Links}></Navbar>:""}
         <Routes>
           <Route path="/login" element={loginContent}></Route>
           <Route path="/admin" element={AdminHomeContent}></Route>
@@ -76,6 +114,10 @@ function App() {
           <Route path="/managehostels" element={ManageHostelsContent}></Route>
           <Route path="/newhostel" element={NewHostelContent}></Route>
           <Route path="/rejected_applications" element={rejectedapplications}></Route>
+          <Route path="/admin_application_status" element={AdminApplicationStatus}></Route>
+          <Route path="/student_application_status" element={StudentApplicationStatus}></Route>
+          <Route path="/occupancyhistory" element={StudentOccupancyHistory}></Route>
+
         </Routes>
       </Router>
     </div>

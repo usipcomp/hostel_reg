@@ -4,6 +4,7 @@ const { body, validationResult } = require("express-validator");
 const Hostel = require("../Models/Hostels");
 const Beds = require("../Models/Beds");
 const Occupancy = require("../Models/OccupancyHistory");
+const Hostel_Applications = require("../Models/Hostel_Applications");
 
 router.post(
   "/",
@@ -80,6 +81,7 @@ router.get("/", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+// allotment algorithm
 router.post("/allocate",async(req,res)=>{
   try {
     const {applications,from,to} = req.body;
@@ -87,26 +89,33 @@ router.post("/allocate",async(req,res)=>{
     // console.log(from,to,applications)
     // console.log(req.body)
     const bedIndfo = await Beds.find({Occupancy:false});
-    console.log(bedIndfo);
+    // console.log(bedIndfo);
     const total_beds = bedIndfo.length;
     let pointer1 = 0;
     let pointer2 = 0;
     while(pointer1<total_apps && pointer2<total_beds){
       let newAllot = {};
       if(applications[pointer1].year_of_admission===2021){
-        newAllot.ApplicationID = 32412;
+        newAllot.ApplicationID = 123456;
         newAllot.Occupancy = true;
         console.log(newAllot)
+        // finding available beds and storing the data
         const newAllotment = await Beds.findOneAndUpdate({Occupancy:false},{$set:newAllot},{new:true});
+        console.log('level 2')
         console.log(newAllotment);
+        // updating the occupancy history
         const newOccupancy = await Occupancy.create({
           BedID:newAllotment.BedID,
           StudentRollNo:applications[pointer1].roll_no,
           StudentYear:applications[pointer1].year_of_admission,
           FromDate:from,
           ToDate:to,
-          ApplicationNumber:32412
+          ApplicationNumber:newAllot.ApplicationID
         })
+        console.log(newOccupancy)
+        const newUser = {};
+        newUser.allotedStatus = "accepted";
+        app = await Hostel_Applications.findByIdAndUpdate({_id:applications[pointer1]._id},{$set:newUser},{new:true});
         pointer1++;
         pointer2++;
       }
@@ -114,6 +123,7 @@ router.post("/allocate",async(req,res)=>{
         pointer1++;
       }
     }
+    const rejectedRemaining = await Hostel_Applications.updateMany({allotedStatus:"pending"},{$set:{allotedStatus:"rejected"}},{new:true});
     res.status(200).send("got the data")
   } catch (error) {
     res.status(500).send("Internal Server Error");

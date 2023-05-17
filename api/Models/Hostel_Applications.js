@@ -57,11 +57,7 @@ const ApplicationSchema = Schema(
     sign: { type: String },
     discrepancy: { type: String },
     ProfilePic: { type: String },
-    applicable:{
-      type:Boolean,
-      enum:[true,false],
-      // default:true,
-    }
+    allotedStatus:{type:String},
   },
   { timestamps: true }
 );
