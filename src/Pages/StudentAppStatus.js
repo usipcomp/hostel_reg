@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
 import { MdOutlinePictureAsPdf } from 'react-icons/md';
+import ViewAppStatus from './ViewAppStatus';
 
 const StudentAppStatus = (roll_no) => {
     const [singleApplication, setSingleApplication] = useState(null)
@@ -24,7 +25,7 @@ const StudentAppStatus = (roll_no) => {
     }
     useEffect(() => {
         getSingleApplication(user.student.roll_no);
-
+        
     }, [user])
     return (
         <>
@@ -40,6 +41,10 @@ const StudentAppStatus = (roll_no) => {
                             <MdOutlinePictureAsPdf className="mr-2"></MdOutlinePictureAsPdf><div className='text-base'>PDF</div>
                         </Link>
                     </div>
+                    {singleApplication.allotedStatus==="accepted"?<div>
+                        <ViewAppStatus application={singleApplication}></ViewAppStatus>
+                        {/* <div>hostel name</div> */}
+                    </div>:<div></div>}
                 </>
                 }
             </div>

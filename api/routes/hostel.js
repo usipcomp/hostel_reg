@@ -96,7 +96,7 @@ router.post("/allocate",async(req,res)=>{
     while(pointer1<total_apps && pointer2<total_beds){
       let newAllot = {};
       if(applications[pointer1].year_of_admission===2021){
-        newAllot.ApplicationID = 123456;
+        newAllot.ApplicationID = applications[pointer1].stu_id;
         newAllot.Occupancy = true;
         console.log(newAllot)
         // finding available beds and storing the data

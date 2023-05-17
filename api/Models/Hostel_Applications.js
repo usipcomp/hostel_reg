@@ -29,7 +29,7 @@ const ApplicationSchema = Schema(
     fathe_office_address: { type: String },
     father_office_no: { type: String },
     mother_name: { type: String },
-    mother_phone_phone_no: { type: String },
+    mother_phone_no: { type: String },
     mother_email: { type: String },
     mother_occupation: { type: String },
     mother_office_address: { type: String },
