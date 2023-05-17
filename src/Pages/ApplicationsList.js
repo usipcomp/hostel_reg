@@ -6,30 +6,42 @@ import { GiCancel } from "react-icons/gi";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import InputField from "../Components/InputField";
-import Dropdown from "../Components/Dropdown";
+import { useSelector } from "react-redux";
 
 const ApplicationsList = () => {
   const [applications, setApplications] = useState([]);
   const [toggleButton, setToggleButton] = useState(false)
+  const user = useSelector((state) => state.user.currentUser);
+
   useEffect(() => {
-    const getApplications = async () => {
-      try {
-        const res = await axios.get(
-          "http://localhost:4000/hostelreg/applications/auth/application"
-        );
-        const array = Array.from(res.data).filter((app)=>app.applicable!==false);
-        setApplications(array);
-      } catch (err) {
-        console.log(err); 
-      }
-    };
-    getApplications();
+    if(user.user==="admin"){
+      const getApplications = async () => {
+        try {
+          const res = await axios.get(
+            "http://localhost:4000/hostelreg/applications/auth/application"
+          );
+          const array = Array.from(res.data).filter((app)=>{
+            return (app.allotedStatus!=="rejected")&&(app.allotedStatus!=="accepted")
+          });
+          setApplications(array);
+        } catch (err) {
+          console.log(err); 
+        }
+      };
+      getApplications();
+    }
+    else{
+      alert("You are not authorised")
+    }
   }, []);
   const remove_app = async(id)=>{
     const response = await fetch(`http://localhost:4000/hostelreg/applications/auth/application/${id}`,{
       method:"PUT",
+      headers:{
+        'Content-Type':'application/json'
+      },
       body:JSON.stringify({
-        applicable:false,
+        allotedStatus:"rejected",
         
       })
       // authtoken to authorise the admin, for that we need a middleware that can be done later.
@@ -59,12 +71,6 @@ const ApplicationsList = () => {
     });
     console.log(response)
   }
-  const Links = [
-    { value: "Open/Close Application", redirect: "/manageapplications" },
-    { value: "Submitted Applications", redirect: "/submittedapplications" },
-    { value: "Rejected Application", redirect: "/rejected_applications" },
-    { value: "Manage Hostels", redirect: "/managehostels" },
-  ];
   // const applications = [
   //   {
   //     name: "Ayush Gupta",
@@ -112,7 +118,7 @@ const ApplicationsList = () => {
   });
   return (
     <div className="h-fit min-h-screen bg-[#edf6f9] w-full">
-      <Navbar Links={Links}></Navbar>
+
       {toggleButton && <div id="authentication-modal" tabIndex="-1" aria-hidden="true" className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none bg-gray-600/75">
           <div className="relative w-full max-w-md max-h-full">
 

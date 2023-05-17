@@ -13,7 +13,7 @@ const RejectedApplications = () => {
                 const res = await axios.get(
                     "http://localhost:4000/hostelreg/applications/auth/application"
                 );
-                const array = Array.from(res.data).filter((app) => app.applicable === false);
+                const array = Array.from(res.data).filter((app) => app.allotedStatus === "rejected");
                 setApplications(array);
             } catch (err) {
                 console.log(err);
@@ -28,7 +28,7 @@ const RejectedApplications = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                applicable: true,
+                alloted: "pending",
 
             })
             // authtoken to authorise the admin, for that we need a middleware that can be done later.
@@ -37,12 +37,7 @@ const RejectedApplications = () => {
         setApplications(array);
         console.log(response);
     }
-    const Links = [
-        { value: "Open/Close Application", redirect: "/manageapplications" },
-        { value: "Submitted Applications", redirect: "/submittedapplications" },
-        { value: "Rejected Application", redirect: "/rejected_applications" },
-        { value: "Manage Hostels", redirect: "/managehostels" },
-    ];
+    
     // const applications = [
     //   {
     //     name: "Ayush Gupta",
@@ -90,7 +85,7 @@ const RejectedApplications = () => {
     });
     return (
         <div className="h-fit min-h-screen bg-[#edf6f9] w-full">
-            <Navbar Links={Links}></Navbar>
+
             <div className="w-full h-full flex">
                 <div className="h-full w-2/3 mx-auto">{renderedApplications}</div>
             </div>

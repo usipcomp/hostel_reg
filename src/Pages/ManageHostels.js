@@ -37,12 +37,6 @@ function ManageHostels() {
     setToggleButton(!toggleButton);
     getHostels(dispatch)
   }
-  const Links = [
-    { value: "Open/Close Application", redirect: "/manageapplications" },
-    { value: "Submitted Applications", redirect: "/submittedapplications" },
-    { value: "Rejected Application", redirect: "/rejected_applications" },
-    { value: "Manage Hostels", redirect: "/managehostels" },
-  ];
   const renderedHostels = hostel.hostels.map((h, ind) => {
     let gender;
     if (h.Type === "G") {
@@ -61,7 +55,6 @@ function ManageHostels() {
   return (
     <>
       <div className="w-full min-h-screen h-fit bg-[#edf6f9]">
-        <Navbar Links={Links}></Navbar>
 
         {toggleButton && <div id="authentication-modal" tabIndex="-1" aria-hidden="true" className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none bg-gray-600/75">
           <div className="relative w-full max-w-md max-h-full">

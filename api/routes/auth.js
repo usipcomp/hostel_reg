@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const Hostel_Applications = require("../Models/Hostel_Applications");
+const OccupancyHistory = require("../Models/OccupancyHistory")
 
 // Route 1 : Creating create user endpoint :POST /api/routes/auth/createuser : no login req
 router.post(
@@ -40,7 +41,7 @@ router.post(
       // }
       // creating user
       const newUser = new Hostel_Applications({
-        applicable:req.body.applicable,
+        allotedStatus:req.body.allotedStatus,
         roll_no: req.body.roll_no,
         name: req.body.name,
         email: req.body.email,
@@ -129,6 +130,20 @@ router.get("/application/:id", async (req, res) => {
     res.status(500).json(err);
   }
 });
+router.post("/get_application_details", async (req, res) => {
+  try {
+    const roll_no = req.body.roll_no;
+    const foundApplication = await Hostel_Applications.find({roll_no:roll_no});
+    if(!foundApplication){
+      res.status(404).json({message:"Not found"});
+    }
+    else{
+      res.status(200).json(foundApplication[0]);
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 router.put("/application/:id", async (req, res) => {
   try {
     const app_id = req.params.id;
@@ -138,12 +153,13 @@ router.put("/application/:id", async (req, res) => {
     }
     else{
       const newUser = {};
-      if(!req.body.applicable){
-        newUser.applicable = false;
+      console.log(req.body.allotedStatus)
+      if(req.body.allotedStatus==="rejected"){
+        newUser.allotedStatus = "rejected";
         console.log("this is false value")
       }
       else{
-        newUser.applicable = true;
+        newUser.allotedStatus = "pending";
         console.log("this is true value")
       }
       app = await Hostel_Applications.findByIdAndUpdate({_id:app_id},{$set:newUser},{new:true});
@@ -153,5 +169,19 @@ router.put("/application/:id", async (req, res) => {
     res.status(500).json(err);
   }
 });
-
+// fetching the occupancy history of the student
+router.post("/occupancyhistory",async(req,res)=>{
+  try {
+    const roll_no = req.body.roll_no;
+    const foundApplications = await OccupancyHistory.find({StudentRollNo:roll_no});
+    if(!foundApplications){
+      res.status(404).json({message:"Not found"});
+    }
+    else{
+      res.status(200).json(foundApplications);
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+})
 module.exports = router;

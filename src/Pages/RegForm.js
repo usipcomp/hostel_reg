@@ -50,7 +50,7 @@ function RegForm() {
     event.preventDefault();
 
     let tempFormData = {};
-    tempFormData["applicable"] = true;
+    tempFormData["allotedStatus"] = "pending";
     for (let i = 0; i < event.target.length; i++) {
       if (event.target[i].type === "file" && event.target[i].files.length) {
         tempFormData[event.target[i].id] = event.target[i].files[0].name;

@@ -4,12 +4,6 @@ import Navbar from "../Components/Navbar";
 import axios from "axios";
 import { Link } from "react-router-dom";
 const ManageApplication = () => {
-  const Links = [
-    { value: "Open/Close Application", redirect: "/manageapplications" },
-    { value: "Submitted Applications", redirect: "/submittedapplications" },
-    { value: "Rejected Application", redirect: "/rejected_applications" },
-    { value: "Manage Hostels", redirect: "/managehostels" },
-  ];
   const [applications, setApplications] = useState();
   useEffect(() => {
     const getApplications = async () => {
@@ -27,7 +21,7 @@ const ManageApplication = () => {
   }, []);
   return (
     <div className="w-full min-h-screen h-fit bg-[#edf6f9]">
-      <Navbar Links={Links}></Navbar>
+
       <div className="w-full h-full">
         <div className="flex justify-end">
           <div className="m-4">
