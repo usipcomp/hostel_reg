@@ -3,7 +3,9 @@ const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const Hostel_Applications = require("../Models/Hostel_Applications");
 const OccupancyHistory = require("../Models/OccupancyHistory")
-
+const Beds = require("../Models/Beds")
+const Prices = require("../Models/Prices")
+const Hostels = require("../Models/Hostels")
 // Route 1 : Creating create user endpoint :POST /api/routes/auth/createuser : no login req
 router.post(
   "/application",
@@ -182,6 +184,37 @@ router.post("/occupancyhistory",async(req,res)=>{
     }
   } catch (err) {
     res.status(500).json(err);
+  }
+})
+router.post("/getAllotedData",async(req,res)=>{
+  try {
+      const roll_no = req.body.roll_no;
+      const findOccupancy = await OccupancyHistory.findOne({StudentRollNo:roll_no})
+      console.log(findOccupancy)
+      const {BedID} = findOccupancy;
+      console.log(BedID+'')
+      const findBedData = await Beds.findOne({BedID:BedID});
+      console.log(findBedData)
+      if(!findBedData){
+        res.status(404).json({message:"Not found"});
+      }
+      else{
+        const {RoomType,HostelID} = findBedData;
+        console.log(RoomType);
+        const bedPrice = await Prices.findOne({Type:RoomType});
+        console.log(bedPrice)
+        const HostelData = await Hostels.findOne({HostelID:HostelID});
+        console.log(HostelData)
+        const object = {};
+        object.BedData = findBedData;
+        object.BedPriceData = bedPrice;
+        object.HostelData = HostelData;
+        console.log(object)
+        res.status(200).json(object);
+      }
+
+  } catch (error) {
+    res.status(500).json(error);
   }
 })
 module.exports = router;

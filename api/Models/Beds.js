@@ -10,7 +10,7 @@ const BedSchema = Schema({
     type: String,
     enum: ["1S", "2S", "3SAC", "3SNAC"],
   },
-  HostelID: { type: Number },
+  HostelID: { type: String },
   Occupancy: { type: Boolean, enum: [true, false], default: false },
   Floor: { type: Number },
   ApplicationID: { type: Number },
