@@ -190,26 +190,26 @@ router.post("/getAllotedData",async(req,res)=>{
   try {
       const roll_no = req.body.roll_no;
       const findOccupancy = await OccupancyHistory.findOne({StudentRollNo:roll_no})
-      console.log(findOccupancy)
+      // console.log(findOccupancy)
       const {BedID} = findOccupancy;
-      console.log(BedID+'')
+      // console.log(BedID+'')
       const findBedData = await Beds.findOne({BedID:BedID});
-      console.log(findBedData)
+      // console.log(findBedData)
       if(!findBedData){
         res.status(404).json({message:"Not found"});
       }
       else{
         const {RoomType,HostelID} = findBedData;
-        console.log(RoomType);
+        // console.log(RoomType);
         const bedPrice = await Prices.findOne({Type:RoomType});
-        console.log(bedPrice)
+        // console.log(bedPrice)
         const HostelData = await Hostels.findOne({HostelID:HostelID});
-        console.log(HostelData)
+        // console.log(HostelData)
         const object = {};
         object.BedData = findBedData;
         object.BedPriceData = bedPrice;
         object.HostelData = HostelData;
-        console.log(object)
+        // console.log(object)
         res.status(200).json(object);
       }
 
