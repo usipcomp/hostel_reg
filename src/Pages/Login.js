@@ -33,7 +33,7 @@ function Login() {
   }
 
   return (
-    <div className="h-screen bg-[#f0ead2] w-full flex">
+    <div className="h-screen w-full flex">
       <div className="h-fit m-auto bg-[#dde5b6] w-1/3 p-10 rounded-lg">
         {error}
         <div className="font-bold mx-auto text-3xl my-4">Login</div>
