@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import RegForm from "./Pages/RegForm";
 import Login from "./Pages/Login";
 import {
@@ -24,10 +24,20 @@ import Navbar from "./Components/Navbar";
 import "./App.css"
 import MyProfile from "./Pages/MyProfile";
 import HostelIDCard from "./Pages/HostelDCard"
+import Alert from "./Components/Alert";
 
 function App() {
   const user = useSelector((state) => state.user.currentUser);
-  
+  const [alert, setAlert] = useState(null);
+  const showAlert = (type, display) => {
+    setAlert({
+      theme: type,
+      message: display
+    })
+    setTimeout(() => {
+      setAlert(null)
+    }, 2000);
+  }
   let Links=[]
   if(user && user.user!=="admin"){
     Links = [
@@ -38,7 +48,6 @@ function App() {
       },
       { value: "Occupancy History", redirect: "/occupancyhistory" },
       { value: "New Application", redirect: "/application" },
-      { value: "Change Password", redirect: "/changepassword" },
     ];
   }
   else{
@@ -67,32 +76,32 @@ function App() {
     NewHostelContent;
     console.log(user);
   if (!user) {
-    homeContent = <Login></Login>;
-    AdminHomeContent = <AdminLogin></AdminLogin>;
-    ApplicationsListContent = <AdminLogin></AdminLogin>;
-    ManageApplicationContent = <AdminLogin></AdminLogin>;
-    RegFormContent = <Login></Login>;
-    loginContent = <Login></Login>;
-    ManageHostelsContent = <AdminLogin></AdminLogin>;
-    NewHostelContent = <AdminLogin></AdminLogin>;
-    rejectedapplications =  <AdminLogin></AdminLogin>;
-    AdminApplicationStatus =  <AdminLogin></AdminLogin>;
-    StudentApplicationStatus = <Login></Login>
-    StudentOccupancyHistory = <Login></Login>
-    HostelID = <Login></Login>;
+    homeContent = <Login showAlert={showAlert}></Login>;
+    AdminHomeContent = <AdminLogin showAlert={showAlert}></AdminLogin>;
+    ApplicationsListContent = <AdminLogin showAlert={showAlert}></AdminLogin>;
+    ManageApplicationContent = <AdminLogin showAlert={showAlert}></AdminLogin>;
+    RegFormContent = <Login showAlert={showAlert}></Login>;
+    loginContent = <Login showAlert={showAlert}></Login>;
+    ManageHostelsContent = <AdminLogin showAlert={showAlert}></AdminLogin>;
+    NewHostelContent = <AdminLogin showAlert={showAlert}></AdminLogin>;
+    rejectedapplications =  <AdminLogin showAlert={showAlert}></AdminLogin>;
+    AdminApplicationStatus =  <AdminLogin showAlert={showAlert}></AdminLogin>;
+    StudentApplicationStatus = <Login showAlert={showAlert}></Login>
+    StudentOccupancyHistory = <Login showAlert={showAlert}></Login>
+    HostelID = <Login showAlert={showAlert}></Login>;
     hostelIDCard = <HostelIDCard></HostelIDCard>
     
   } else {
     homeContent = <StudentHome></StudentHome>;
     AdminHomeContent = <AdminHome></AdminHome>;
-    ApplicationsListContent = <ApplicationsList></ApplicationsList>;
-    ManageApplicationContent = <ManageApplication></ManageApplication>;
+    ApplicationsListContent = <ApplicationsList showAlert={showAlert}></ApplicationsList>;
+    ManageApplicationContent = <ManageApplication showAlert={showAlert}></ManageApplication>;
     ApplicationView = <StudentApplicationView></StudentApplicationView>
-    RegFormContent = <RegForm></RegForm>;
+    RegFormContent = <RegForm showAlert={showAlert}></RegForm>;
     loginContent = <StudentHome></StudentHome>;
-    ManageHostelsContent = <ManageHostels></ManageHostels>;
-    NewHostelContent = <NewHostel></NewHostel>;
-    rejectedapplications = <RejectedApplications></RejectedApplications>
+    ManageHostelsContent = <ManageHostels showAlert={showAlert}></ManageHostels>;
+    NewHostelContent = <NewHostel showAlert={showAlert}></NewHostel>;
+    rejectedapplications = <RejectedApplications showAlert={showAlert}></RejectedApplications>
     AdminApplicationStatus = <AdminAppStatus></AdminAppStatus>
     StudentApplicationStatus = <StudentAppStatus></StudentAppStatus>
     StudentOccupancyHistory = <OccupancyHistoryStudent></OccupancyHistoryStudent>
@@ -103,6 +112,7 @@ function App() {
     <div>
       <Router>
         {user?<Navbar Links={Links}></Navbar>:""}
+        <Alert alert={alert}></Alert>
         <Routes>
           <Route path="/login" element={loginContent}></Route>
           <Route path="/admin" element={AdminHomeContent}></Route>

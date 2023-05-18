@@ -5,6 +5,18 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 const ManageApplication = () => {
   const [applications, setApplications] = useState();
+  const openCloseApplications = async(flag)=>{
+    const response = await fetch("http://localhost:4000/hostels/acceptresponses",{
+      method:"POST",
+      headers:{
+        'Content-Type':'application/json',
+      },
+      body:JSON.stringify({
+        acceptResponses:flag,
+      })
+    })
+    console.log(response);
+  }
   useEffect(() => {
     const getApplications = async () => {
       try {
@@ -25,7 +37,7 @@ const ManageApplication = () => {
       <div className="w-full h-full">
         <div className="flex justify-end">
           <div className="m-4">
-            <Button bgGreen>New Application</Button>
+            <Button handleClick={()=>{openCloseApplications(true)}} bgGreen>New Application</Button>
           </div>
         </div>
         <div className="flex w-full h-full">
@@ -51,7 +63,7 @@ const ManageApplication = () => {
                   View All Applications
                 </Button>
               </Link>
-              <Button danger>Close Application</Button>
+              <Button handleClick={()=>{openCloseApplications(false)}} danger>Close Application</Button>
             </div>
           </div>
         </div>

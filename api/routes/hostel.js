@@ -5,7 +5,7 @@ const Hostel = require("../Models/Hostels");
 const Beds = require("../Models/Beds");
 const Occupancy = require("../Models/OccupancyHistory");
 const Hostel_Applications = require("../Models/Hostel_Applications");
-
+const OpenCloseApplications = require("../Models/OpenCloseApplications")
 router.post(
   "/",
   [
@@ -125,6 +125,24 @@ router.post("/allocate",async(req,res)=>{
     }
     const rejectedRemaining = await Hostel_Applications.updateMany({allotedStatus:"pending"},{$set:{allotedStatus:"rejected"}},{new:true});
     res.status(200).send("got the data")
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+})
+router.post("/acceptresponses",async(req,res)=>{
+  try {
+    const flag = req.body.acceptResponses;
+    const newAllotment = await OpenCloseApplications.findOneAndUpdate({acceptResponses:!flag},{$set:{acceptResponses:flag}},{new:true});
+    console.log(newAllotment)
+    res.status(200).json({success:true,message:"Form no longer accepting responses"});
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+})
+router.get("/acceptresponses",async(req,res)=>{
+  try {
+    const newAllotment = await OpenCloseApplications.find();
+    res.status(200).json(newAllotment[0]);
   } catch (error) {
     res.status(500).send("Internal Server Error");
   }
