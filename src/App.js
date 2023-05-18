@@ -22,6 +22,8 @@ import StudentAppStatus from "./Pages/StudentAppStatus";
 import OccupancyHistoryStudent from "./Pages/OccupancyHistoryStudent";
 import Navbar from "./Components/Navbar";
 import "./App.css"
+import MyProfile from "./Pages/MyProfile";
+import HostelIDCard from "./Pages/HostelDCard"
 
 function App() {
   const user = useSelector((state) => state.user.currentUser);
@@ -29,6 +31,7 @@ function App() {
   let Links=[]
   if(user && user.user!=="admin"){
     Links = [
+      { value: "My Profile", redirect: "/hostelid" },
       {
         value: "Application Status",
         redirect: "/student_application_status",
@@ -59,6 +62,8 @@ function App() {
     AdminApplicationStatus,
     StudentApplicationStatus,
     StudentOccupancyHistory,
+    HostelID,
+    hostelIDCard,
     NewHostelContent;
     console.log(user);
   if (!user) {
@@ -74,6 +79,8 @@ function App() {
     AdminApplicationStatus =  <AdminLogin></AdminLogin>;
     StudentApplicationStatus = <Login></Login>
     StudentOccupancyHistory = <Login></Login>
+    HostelID = <Login></Login>;
+    hostelIDCard = <HostelIDCard></HostelIDCard>
     
   } else {
     homeContent = <StudentHome></StudentHome>;
@@ -89,6 +96,8 @@ function App() {
     AdminApplicationStatus = <AdminAppStatus></AdminAppStatus>
     StudentApplicationStatus = <StudentAppStatus></StudentAppStatus>
     StudentOccupancyHistory = <OccupancyHistoryStudent></OccupancyHistoryStudent>
+    HostelID = <MyProfile></MyProfile>
+    hostelIDCard = <HostelIDCard></HostelIDCard>
   }
   return (
     <div>
@@ -109,6 +118,10 @@ function App() {
             path="/:id"
             element={ApplicationView}
           ></Route>
+          <Route
+            path="/hostelid/:id"
+            element={hostelIDCard}
+          ></Route>
           <Route path="/application" element={RegFormContent}></Route>
           <Route path="/" element={homeContent}></Route>
           <Route path="/managehostels" element={ManageHostelsContent}></Route>
@@ -117,6 +130,7 @@ function App() {
           <Route path="/admin_application_status" element={AdminApplicationStatus}></Route>
           <Route path="/student_application_status" element={StudentApplicationStatus}></Route>
           <Route path="/occupancyhistory" element={StudentOccupancyHistory}></Route>
+          <Route path="/hostelid" element={HostelID}></Route>
 
         </Routes>
       </Router>

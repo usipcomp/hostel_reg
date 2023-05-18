@@ -7,7 +7,7 @@ const AdminHome = () => {
 
   return (
     <div className="w-full h-fit min-h-screen bg-[#edf6f9]">
-      <div className="font-semibold m-10 text-2xl">Welcome! Ayush Gupta</div>
+      <div className="font-semibold m-10 text-2xl">Welcome! Admin</div>
     </div>
   );
 };

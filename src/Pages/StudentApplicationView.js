@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Page, Text, View, Document, PDFViewer, Font, StyleSheet } from '@react-pdf/renderer';
+import { Page, Text, View, Document, PDFViewer, Font, StyleSheet, Image } from '@react-pdf/renderer';
 
 // Create styles
 const styles = StyleSheet.create({
     page: {
         fontSize: 12,
         backgroundColor: '#E4E4E4',
+    },
+    img:{
+        width:120,
+        height:120,
+        marginHorizontal:"auto",
+        marginVertical:10,
     },
     container: {
         flex: 1,
@@ -46,7 +52,7 @@ const styles = StyleSheet.create({
         width:275,
     },
     headers:{
-        fontWeight:800,
+        fontFamily:'Helvetica-Bold',
         borderBottom:'1px',
         width:275,
     },
@@ -58,7 +64,7 @@ const styles = StyleSheet.create({
         flex:1,
     },
     nxtLineHeaders:{
-        fontWeight:800,
+        fontFamily:"Helvetica-Bold",
         borderBottom:'1px',
         width:275,
         marginTop:20,
@@ -71,7 +77,7 @@ const topSectionRightContent = `HOSTEL REGISTRATION FORM\n\t\t\t\t\t\t\t\t\tACAD
 
 const address = `SHAHBAD,BAWANA ROAD,DELHI,PH-27852204`;
 const middleSectionContent = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. \nSed sagittis, tortor nec\n lacinia consequat, felis mi fringilla libero, a lacinia sem neque vel massa.\n Morbi ut diam id felis condimentum posuere. Nulla facilisi. Vivamus id velit odio. Aliquam erat volutpat.`;
-Font.register({ fontStyle: 'normal', fontWeight: 'normal' });
+Font.register({ family: 'Helvetica-Bold'});
 
 const StudentApplicationView = () => {
     const { id } = useParams();
@@ -85,7 +91,7 @@ const StudentApplicationView = () => {
 
                 });
                 const json = await resp.json();
-                console.log(json)
+                // console.log(json)
                 setApplication(json[0]);
             }
             catch (err) {
@@ -99,8 +105,8 @@ const StudentApplicationView = () => {
             <div>
                 {/* this is the complete view of the student application */}
                 <div className="stud_app" style={{ width: "100%", height: "100vh", fontSize: "small" }}>
-                    <PDFViewer style={{ width: "100%", height: "100%", fontSize: 'small' }}>
-                        <Document>
+                    <PDFViewer style={{ width: "100%", height: "100%", fontSize: 'small' }} showToolbar={true}>
+                        <Document title={application.name+" "+application.roll_no} >
                             <Page size="A4" style={styles.page}>
                                 <View style={styles.container}>
                                     <View style={styles.topSection}>
@@ -115,6 +121,7 @@ const StudentApplicationView = () => {
                                         </View>
                                     </View>
                                     <View style={styles.middleSection}>
+                                        {<Image style={styles.img} src={"https://images.unsplash.com/photo-1684005733545-e604a648d4d0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=802&q=80"}/>}
                                         <View style={styles.columnsContainer}>
                                             <View style={styles.column}>
                                                 <Text style={styles.headers}>PERSONAL DETAILS</Text>
@@ -171,8 +178,17 @@ const StudentApplicationView = () => {
                                                 </View>
                                                 <View style={styles.dataSections}>
                                                     <Text>{`Father Occupation`}</Text>
-                                                    <Text style={styles.data}>{application.
-father_occupation}</Text>
+                                                    <Text style={styles.data}>{application.father_occupation}</Text>
+                                                </View>
+                                                <View style={styles.dataSections}>
+                                                    <Text style={{marginRight:10}}>{`Father Office Address`}</Text>
+                                                    <Text style={styles.longtext}>{application.father_office_address
+}</Text>
+                                                </View>
+                                                <View style={styles.dataSections}>
+                                                    <Text>{`Father Office Phone No`}</Text>
+                                                    <Text style={styles.data}>{application.father_office_phone_no
+}</Text>
                                                 </View>
                                                 {/*
                                                 <View style={styles.dataSections}>
@@ -190,13 +206,7 @@ father_occupation}</Text>
                                                 {/* Mother data */}
                                                 <View style={styles.dataSections}>
                                                     <Text>{`Mother Name`}</Text>
-                                                    <Text style={styles.data}>{application.
-mother_name}</Text>
-                                                </View>
-                                                <View style={styles.dataSections}>
-                                                    <Text>{`Region`}</Text>
-                                                    <Text style={styles.data}>{application.
-mother_phone_no}</Text>
+                                                    <Text style={styles.data}>{application.mother_name}</Text>
                                                 </View>
                                                 <View style={styles.dataSections}>
                                                     <Text>{`Mother Email`}</Text>
