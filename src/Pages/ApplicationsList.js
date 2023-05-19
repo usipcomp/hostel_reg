@@ -7,6 +7,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import InputField from "../Components/InputField";
 import { useSelector } from "react-redux";
+import { CSVDownload, CSVLink } from "react-csv";
 
 const ApplicationsList = ({showAlert}) => {
   const [applications, setApplications] = useState([]);
@@ -75,26 +76,15 @@ const ApplicationsList = ({showAlert}) => {
     });
     console.log(response)
   }
-  // const applications = [
-  //   {
-  //     name: "Ayush Gupta",
-  //     roll: "2k21/ee/85",
-  //     applied_on: "26/01/2023",
-  //     app_id: 123123,
-  //   },
-  //   {
-  //     name: "Ayush Gupta",
-  //     roll: "2k21/ee/85",
-  //     applied_on: "26/01/2023",
-  //     app_id: 232342,
-  //   },
-  //   {
-  //     name: "Ayush Gupta",
-  //     roll: "2k21/ee/85",
-  //     applied_on: "26/01/2023",
-  //     app_id: 21312412,
-  //   },
-  // ];
+  const excelCSV = [
+    ["name","rollno","email","phone","gender","course","branch","semester","back_papers","year_of_admission","distance"]
+  ];
+  const addintoExcel = (array)=>{
+    array.forEach((element)=>{
+      excelCSV.push([element.name,element.roll_no,element.email,element.phone_no,element.gender,element.course,element.branch,element.semester,element.back_papers,element.year_of_admission,element.distance])
+    })
+    return excelCSV
+  }
   const renderedApplications = applications.map((app,ind) => {
     return (
       <div key={ind} className="w-full h-fit bg-gray-200 p-4 rounded-xl my-4 flex justify-between shadow-lg hover:scale-105 duration-500 hover:bg-gray-300 cursor-pointer">
@@ -122,6 +112,8 @@ const ApplicationsList = ({showAlert}) => {
   });
   return (
     <div className="h-fit min-h-screen bg-[#edf6f9] w-full">
+      {applications.length?<CSVLink filename={"my-file.csv"}
+  className="btn" data={addintoExcel(applications)} target="_blank">Download Excel/Csv</CSVLink>:""}
 
       {toggleButton && <div id="authentication-modal" tabIndex="-1" aria-hidden="true" className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none bg-gray-600/75">
           <div className="relative w-full max-w-md max-h-full">

@@ -71,7 +71,7 @@ router.post("/allocate",async(req,res)=>{
   try {
     const {applications,from,to,admn_year} = req.body;
     const total_apps = applications.length;
-    console.log(typeof parseInt(admn_year))
+    const admissionYear = parseInt(admn_year)
     // console.log(from,to,applications)
     // console.log(req.body)
     const bedIndfo = await Beds.find({Occupancy:false});
@@ -81,7 +81,7 @@ router.post("/allocate",async(req,res)=>{
     let pointer2 = 0;
     while(pointer1<total_apps && pointer2<total_beds){
       let newAllot = {};
-      if(applications[pointer1].year_of_admission===admn_year){
+      if(applications[pointer1].year_of_admission===admissionYear){
         newAllot.ApplicationID = applications[pointer1].stu_id;
         newAllot.Occupancy = true;
         // console.log(newAllot)
