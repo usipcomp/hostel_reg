@@ -9,7 +9,8 @@ const dotenv = require("dotenv");
 
 dotenv.config({path:__dirname+'/.env'});
 app.use(cors());
-mongoose.connect(process.env.MONGOOSE_URL, {
+var MONGOOSE_URL="mongodb+srv://usipcompcentre2022august:usip123p1@cluster0.a82quus.mongodb.net/test";
+mongoose.connect(MONGOOSE_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
