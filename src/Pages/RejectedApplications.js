@@ -5,7 +5,7 @@ import Navbar from '../Components/Navbar';
 import Button from '../Components/Button';
 import { MdOutlinePictureAsPdf } from "react-icons/md";
 import { GiCancel } from "react-icons/gi";
-const RejectedApplications = () => {
+const RejectedApplications = ({showAlert}) => {
     const [applications, setApplications] = useState([]);
     useEffect(() => {
         const getApplications = async () => {
@@ -35,6 +35,7 @@ const RejectedApplications = () => {
         });
         let array = applications.filter((app) => app._id !== id)
         setApplications(array);
+        showAlert("success","Application restored")
         console.log(response);
     }
     

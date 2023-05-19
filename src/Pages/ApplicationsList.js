@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import InputField from "../Components/InputField";
 import { useSelector } from "react-redux";
 
-const ApplicationsList = () => {
+const ApplicationsList = ({showAlert}) => {
   const [applications, setApplications] = useState([]);
   const [toggleButton, setToggleButton] = useState(false)
   const user = useSelector((state) => state.user.currentUser);
@@ -48,6 +48,7 @@ const ApplicationsList = () => {
     });
     let array = applications.filter((app)=>app._id!==id)
     setApplications(array);
+    showAlert("success","Application Rejected")
     console.log(response);
   }
   const runAlgo = async(event)=>{
@@ -58,6 +59,8 @@ const ApplicationsList = () => {
     });
     let fromdate = (event.target[0].id==="from_date")?(event.target[0].value):"01/01/2023";
     let todate = (event.target[1].id==="to_date")?(event.target[1].value):"01/01/2023";
+    let admn_year = (event.target[2].id==="admn_year")?(event.target[2].value):"2019";
+    console.log(admn_year)
     const response = await fetch("http://localhost:4000/hostels/allocate",{
       method:"POST",
       headers:{
@@ -67,6 +70,7 @@ const ApplicationsList = () => {
         applications:array,
         from:fromdate,
         to:todate,
+        admn_year:admn_year,
       }),
     });
     console.log(response)
@@ -142,6 +146,13 @@ const ApplicationsList = () => {
                     id="to_date"
                     type="date"
                     label="To Date"
+                    required
+                  ></InputField>
+                  <InputField
+                    name="admn_year"
+                    id="admn_year"
+                    type="number"
+                    label="For Year"
                     required
                   ></InputField>
 

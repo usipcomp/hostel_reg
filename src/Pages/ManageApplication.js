@@ -3,7 +3,7 @@ import Button from "../Components/Button";
 import Navbar from "../Components/Navbar";
 import axios from "axios";
 import { Link } from "react-router-dom";
-const ManageApplication = () => {
+const ManageApplication = ({showAlert}) => {
   const [applications, setApplications] = useState();
   const openCloseApplications = async(flag)=>{
     const response = await fetch("http://localhost:4000/hostels/acceptresponses",{
@@ -15,7 +15,7 @@ const ManageApplication = () => {
         acceptResponses:flag,
       })
     })
-    console.log(response);
+    showAlert("success",flag?"Accepting form submissions":"Form submission closed")
   }
   useEffect(() => {
     const getApplications = async () => {

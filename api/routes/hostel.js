@@ -38,21 +38,6 @@ router.post(
     }
   }
 );
-// router.delete("/:id",async(req,res)=>{
-//   try {
-//     let hostel_id = req.params.id;
-//     let hostel_info = await Hostel.find({HostelID:hostel_id});
-//     if(!hostel_info){
-//       return res.status(400).json(message,"Bad request");
-//     }
-//     else{
-//       hostel_info = await Hostel.deleteOne({HostelID:hostel_id});
-//       res.status(204).send("hostel info deleted successfully");
-//     }
-//   } catch (error) {
-//     res.status(500).send("Internal Server Error");
-//   }
-// });
 router.put("/",async(req,res)=>{
   try {
     console.log(req.body);
@@ -84,8 +69,9 @@ router.get("/", async (req, res) => {
 // allotment algorithm
 router.post("/allocate",async(req,res)=>{
   try {
-    const {applications,from,to} = req.body;
+    const {applications,from,to,admn_year} = req.body;
     const total_apps = applications.length;
+    console.log(typeof parseInt(admn_year))
     // console.log(from,to,applications)
     // console.log(req.body)
     const bedIndfo = await Beds.find({Occupancy:false});
@@ -95,13 +81,13 @@ router.post("/allocate",async(req,res)=>{
     let pointer2 = 0;
     while(pointer1<total_apps && pointer2<total_beds){
       let newAllot = {};
-      if(applications[pointer1].year_of_admission===2021){
+      if(applications[pointer1].year_of_admission===admn_year){
         newAllot.ApplicationID = applications[pointer1].stu_id;
         newAllot.Occupancy = true;
-        console.log(newAllot)
+        // console.log(newAllot)
         // finding available beds and storing the data
         const newAllotment = await Beds.findOneAndUpdate({Occupancy:false},{$set:newAllot},{new:true});
-        console.log('level 2')
+        // console.log('level 2')
         console.log(newAllotment);
         // updating the occupancy history
         const newOccupancy = await Occupancy.create({

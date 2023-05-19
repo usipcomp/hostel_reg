@@ -67,10 +67,11 @@ function RegForm({showAlert}) {
       )
       .then(function (response) {
         console.log("success", response.data);
-        showAlert("")
+        showAlert("success","form submitted successfully")
       })
       .catch(function (err) {
         console.log("oops", err);
+        showAlert("danger","some error occured")
       });
   };
 
