@@ -7,7 +7,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import InputField from "../Components/InputField";
 import { useSelector } from "react-redux";
-import { CSVDownload, CSVLink } from "react-csv";
+import { CSVLink } from "react-csv";
 
 const ApplicationsList = ({showAlert}) => {
   const [applications, setApplications] = useState([]);
@@ -77,11 +77,11 @@ const ApplicationsList = ({showAlert}) => {
     console.log(response)
   }
   const excelCSV = [
-    ["name","rollno","email","phone","gender","course","branch","semester","back_papers","year_of_admission","distance"]
+    ["name","rollno","email","phone","gender","course","branch","semester","back_papers","year_of_admission","distance","blood_group","region","sgpa","chronic_problems","preferences","father_name","father_phone_no","father_email","father_occupation","father_office_address","father_office_no","mother_name","mother_phone_no","mother_email","mother_occupation","mother_office_address","mother_office_phone_no","acc_no","acc_holder_name","bank_name","ifsc","bank_branch","bank_address","home_address","home_city","home_state","home_country","home_pincode","corr_address","corr_city","corr_state","corr_country","corr_pincode","local_guardian_name","local_guardian_address","local_guardian_phone_no","local_guardian_email","sign","discrepancy","ProfilePic","allotedStatus"]
   ];
   const addintoExcel = (array)=>{
     array.forEach((element)=>{
-      excelCSV.push([element.name,element.roll_no,element.email,element.phone_no,element.gender,element.course,element.branch,element.semester,element.back_papers,element.year_of_admission,element.distance])
+      excelCSV.push([element.name,element.roll_no,element.email,element.phone_no,element.gender,element.course,element.branch,element.semester,element.back_papers,element.year_of_admission,element.distance,element.blood_group,element.region,element.sgpa,element.chronic_problems,element.preferences,element.father_name,element.father_phone_no,element.father_email,element.father_occupation,element.father_office_address,element.father_office_no,element.mother_name,element.mother_phone_no,element.mother_email,element.mother_occupation,element.mother_office_address,element.mother_office_phone_no,element.acc_no,element.acc_holder_name,element.bank_name,element.ifsc,element.bank_branch,element.bank_address,element.home_address,element.home_city,element.home_state,element.home_country,element.home_pincode,element.corr_address,element.corr_city,element.corr_state,element.corr_country,element.corr_pincode,element.local_guardian_name,element.local_guardian_address,element.local_guardian_phone_no,element.local_guardian_email,element.sign,element.discrepancy,element.ProfilePic,element.allotedStatus])
     })
     return excelCSV
   }
