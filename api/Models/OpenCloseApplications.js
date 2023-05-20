@@ -3,7 +3,13 @@ const mongoose = require("mongoose")
 const { Schema } = mongoose;
 
 const OpenCloseApplicationsSchema = Schema({
-  acceptResponses: { type: Boolean },
+  btechFourthYr: { type: Boolean },
+  btechThirdYr: { type: Boolean },
+  btechSecondYr: { type: Boolean },
+  btechFirstYr: { type: Boolean },
+  mtechThirdYr: { type: Boolean },
+  mtechSecondYr: { type: Boolean },
+  mtechFirstYr: { type: Boolean },
 });
 const OpenCloseApplications = mongoose.model("opencloseapplications",OpenCloseApplicationsSchema)
 module.exports = OpenCloseApplications;
