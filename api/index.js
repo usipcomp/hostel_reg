@@ -6,6 +6,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const path = require("path");
+const fs = require("fs")
 
 dotenv.config({path:__dirname+'/.env'});
 app.use(cors());
@@ -32,9 +33,16 @@ const storage = multer.diskStorage({
   }
 })
 const upload = multer({storage:storage});
-app.get("/upload",(req,res)=>{
-  res.status(200).send("hogya bhai")
+app.get("/upload/:filename",(req,res)=>{
+  const searchQuery = req.params.filename;
+  const bufferdata = fs.readFileSync("./images/"+searchQuery)
+  res.status(201).json({img:bufferdata});
 })
+// app.use("/",express.static(path.join(__dirname,"/images"),(req,res)=>{
+//   console.log(__dirname)
+// }))
+// console.log(__dirname)
+
 app.post("/upload",upload.single('image'),(req,res)=>{
   res.status(200).send("uploaded")
 })

@@ -99,6 +99,7 @@ router.post(
         local_guardian_email: req.body.local_guardian_email,
         sign: req.body.sign,
         discrepancy: req.body.discrepancy,
+        ProfilePic:req.body.ProfilePic,
         TandC: req.body.TandC,
       });
       const savedUser = await newUser.save();

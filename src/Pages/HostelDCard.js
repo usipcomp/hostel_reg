@@ -6,8 +6,8 @@ import { useSelector } from "react-redux";
 
 const styles = StyleSheet.create({
     page: {
-        fontSize: 12,
-        backgroundColor: '#E4E4E4',
+        fontSize: 10,
+        backgroundColor: '#fff',
     },
     container: {
         flex: 1,
@@ -15,22 +15,22 @@ const styles = StyleSheet.create({
         alignContent: "center",
         //justifyContent: 'center',
         padding: 5,
-        transform:"rotate(90deg)",
-        position:"absolute",
-        left:"auto",
-        top:275,
-        right:0,
+        transform: "rotate(90deg)",
+        position: "absolute",
+        left: "auto",
+        top: 275,
+        right: 0,
     },
     img: {
-        width: 100,
-        height: 100,
+        width: 80,
+        height: 80,
         marginHorizontal: "auto",
         marginVertical: 10,
     },
     instructions: {
         marginBottom: 10,
         // marginLeft:15,
-        textAlign:"left"
+        textAlign: "left"
     },
     columnsContainer: {
         flexDirection: 'row',
@@ -39,12 +39,13 @@ const styles = StyleSheet.create({
         border: "1px",
         marginHorizontal: "auto",
         width: 350,
-        height:225,
+        height: 200,
         textAlign: "center"
     },
     columnData: {
         marginHorizontal: "auto",
         // width:300,
+        fontSize: 8,
         textAlign: "center"
     },
     columnDataInstr: {
@@ -54,8 +55,8 @@ const styles = StyleSheet.create({
     },
     endLineRight: {
         marginLeft: "auto",
-        marginRight:20,
-        marginTop:20,
+        marginRight: 20,
+        marginTop: 20,
         // width:300,
         textAlign: "left"
     },
@@ -63,75 +64,86 @@ const styles = StyleSheet.create({
         // width: 100,
         marginHorizontal: 10,
         marginTop: 20,
-        textAlign: "left"
+        textAlign: "left",
+        fontSize: 9,
     },
     small: {
         fontSize: 8,
     },
     headers: {
-        fontFamily:"Helvetica-Bold",
-        marginTop:5,
+        fontFamily: "Helvetica-Bold",
+        marginTop: 5,
         marginBottom: 10,
-        marginLeft:10,
+        marginLeft: 10,
     },
-    row:{
+    row: {
         display: 'flex',
         flexDirection: 'row',
-        marginHorizontal:15,
+        marginHorizontal: 15,
     },
-    bullet:{
+    bullet: {
         height: '100%',
     }
 });
 Font.register({
     family: 'Helvetica-Bold',
-    
+
 });
 const HostelDCard = () => {
     const { id } = useParams();
     const [bednPriceData, setBednPriceData] = useState(null)
+    const [photo, setPhoto] = useState({})
     const [application, setApplication] = useState();
     const user = useSelector((state) => state.user.currentUser);
-    const instructionList = ["The ID card must be displayed by holder upon entering hostel premises","In case of loss,duplicate card will be issued on payment of Rs 200/-","Please ensure safe custody of ID card and in case of loss report immediately to hostel office."]
-    useEffect(() => {
-        const getSingleApplication = async (app_id) => {
-            try {
-                const resp = await fetch(`http://localhost:4000/hostelreg/applications/auth/application/${app_id}`, {
+    const instructionList = ["The ID card must be displayed by holder upon entering hostel premises", "In case of loss,duplicate card will be issued on payment of Rs 200/-", "Please ensure safe custody of ID card and in case of loss report immediately to hostel office."]
+    const getSingleApplication = async (app_id) => {
+        try {
+            const resp = await fetch(`http://localhost:4000/hostelreg/applications/auth/application/${app_id}`, {
 
-                    method: "GET",
+                method: "GET",
 
-                });
-                const json = await resp.json();
-                setApplication(json[0]);
-            }
-            catch (err) {
-                console.log(err)
-            }
-        }
-        const getAllotedData = async () => {
-            const response = await fetch("http://localhost:4000/hostelreg/applications/auth/getAllotedData", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    roll_no: user.student.roll_no,
-                })
+            });
+            const json = await resp.json();
+            setApplication(json[0]);
+            const photoresponse = await fetch(`http://localhost:4000/upload/2K19:AE:035.png`, {
+                method: "GET",
             })
-            const json = await response.json();
-            // console.log(json);
-            setBednPriceData(json);
+            
+            // `http://localhost:4000/upload/${json[0].ProfilePic.slice(0, 4) + ":" + json[0].ProfilePic.slice(5, 7) + ":" + json[0].ProfilePic.slice(8)}.png`
+            const newJson = await photoresponse.json();
+            const array = [newJson];
+            console.log(array)
+            setPhoto(array);
         }
+        catch (err) {
+            console.log(err)
+        }
+    }
+    const getAllotedData = async () => {
+        const response = await fetch("http://localhost:4000/hostelreg/applications/auth/getAllotedData", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                roll_no: user.student.roll_no,
+            })
+        })
+        const json = await response.json();
+        // console.log(json);
+        setBednPriceData(json);
+    }
+    useEffect(() => {
 
         getSingleApplication(id);
         getAllotedData();
     }, [])
-    
-    const ListItem = instructionList.map((children,index) => {
+
+    const ListItem = instructionList.map((children, index) => {
         return (
             <View style={styles.row} key={index}>
                 <View style={styles.bullet}>
-                    <Text>{(index+1) + ". "}</Text>
+                    <Text>{(index + 1) + ". "}</Text>
                 </View>
                 <Text>{children}</Text>
             </View>
@@ -141,7 +153,7 @@ const HostelDCard = () => {
         <div>
             <div className="stud_app" style={{ width: "100%", height: "100vh", fontSize: "small" }}>
                 <PDFViewer style={{ width: "100%", height: "100%", fontSize: 'small' }}>
-                    {application && bednPriceData ? <Document title={application.name+" "+application.roll_no}>
+                    {application && bednPriceData && photo ? <Document title={application.name + " " + application.roll_no}>
                         <Page size="A4" style={styles.page}>
                             <View style={styles.container}>
                                 <View style={styles.column}>
@@ -149,7 +161,10 @@ const HostelDCard = () => {
                                     <Text style={styles.headers}>Hostel ID Card{`(Session : 2022-2023)`}</Text>
                                     <View style={styles.columnsContainer}>
                                         <View style={styles.columnData}>
-                                            <Image style={styles.img} src={"https://images.unsplash.com/photo-1684005733545-e604a648d4d0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=802&q=80"} />
+                                            {photo.map((singleData, index) => {
+                                                const base64String = btoa(String.fromCharCode(... new Uint8Array(singleData.img.data.slice())))
+                                                return <Image key={index} style={styles.img} src={`data:image/png;base64,${base64String}`} />
+                                            })}
                                         </View>
                                         <View style={styles.columnsContainer}>
                                             <View style={styles.columnDataSecondary}>

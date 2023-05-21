@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Page, Text, View, Document, PDFViewer, Font, StyleSheet, Image } from '@react-pdf/renderer';
-
+// import images from '../../api/images'
 // Create styles
 const styles = StyleSheet.create({
     page: {
         fontSize: 12,
-        backgroundColor: '#E4E4E4',
+        backgroundColor: '#fff',
     },
     img:{
         width:120,
@@ -82,6 +82,7 @@ Font.register({ family: 'Helvetica-Bold'});
 const StudentApplicationView = () => {
     const { id } = useParams();
     const [application, setApplication] = useState();
+    const [photo, setPhoto] = useState([])
     useEffect(() => {
         const getSingleApplication = async (app_id) => {
             try {
@@ -91,8 +92,17 @@ const StudentApplicationView = () => {
 
                 });
                 const json = await resp.json();
-                // console.log(json)
+                console.log(json)
                 setApplication(json[0]);
+                const photoresponse = await fetch(`http://localhost:4000/upload/${json[0].ProfilePic.slice(0,4)+":"+json[0].ProfilePic.slice(5,7)+":"+json[0].ProfilePic.slice(8)}.png`,{
+                            method:"GET",
+                        })
+                        // 
+                        // console.log(photoresponse)
+                const newJson = await photoresponse.json();
+                const array = [newJson];
+                console.log(array)
+                setPhoto(array);
             }
             catch (err) {
                 console.log(err)
@@ -100,7 +110,7 @@ const StudentApplicationView = () => {
         }
         getSingleApplication(id);
     }, [])
-    if (application) {
+    if (application && photo) {
         return (
             <div>
                 {/* this is the complete view of the student application */}
@@ -121,7 +131,11 @@ const StudentApplicationView = () => {
                                         </View>
                                     </View>
                                     <View style={styles.middleSection}>
-                                        {<Image style={styles.img} src={"https://images.unsplash.com/photo-1684005733545-e604a648d4d0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=802&q=80"}/>}
+                                        {photo.map((singleData,index)=>{
+                                            const base64String = btoa(String.fromCharCode(... new Uint8Array(singleData.img.data.slice())))
+                                            return <Image key={index} style={styles.img} src={`data:image/png;base64,${base64String}`}/>
+                                        })}
+                                        {/* {<Image style={styles.img} src={'http://localhost:4000/upload/2K19:AE:035.png'}></Image>} */}
                                         <View style={styles.columnsContainer}>
                                             <View style={styles.column}>
                                                 <Text style={styles.headers}>PERSONAL DETAILS</Text>
