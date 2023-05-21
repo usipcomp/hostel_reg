@@ -1,16 +1,10 @@
 import React from "react";
 import Dropdown from "../Components/Dropdown";
 import InputField from "../Components/InputField";
-import Navbar from "../Components/Navbar";
 import Button from "../Components/Button";
 import axios from "axios";
 
 function NewHostel() {
-  const Links = [
-    { value: "Open/Close Application", redirect: "/manageapplications" },
-    { value: "Submitted Applications", redirect: "/submittedapplications" },
-    { value: "Manage Hostels", redirect: "/managehostels" },
-  ];
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -24,7 +18,6 @@ function NewHostel() {
 
   return (
     <div className="w-full min-h-screen h-fit bg-[#edf6f9]">
-      <Navbar Links={Links}></Navbar>
       <div className="w-full flex">
         <form
           className="w-1/2 mx-auto my-10"

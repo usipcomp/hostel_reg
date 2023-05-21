@@ -96,8 +96,7 @@ const MyProfile = () => {
                                     </div>
                                 </div>
                                 <hr style={{border:"0.5px solid"}}/>
-                                {<Link to={`/hostelid/${singleApplication._id}`} className="text-white text-xl cursor-pointer bg-[#006d77] p-2 border-none hover:scale-105 duration-500 h-10 mx-auto flex my-2 w-1/2">
-                            <div className="mr-2"></div><div className='text-base'>Download/View Your Hostel ID Card</div>
+                                {<Link to={`/hostelid/${singleApplication.allotedStatus==="accepted"?singleApplication._id:""}`} className="text-white text-xl cursor-pointer bg-[#006d77] p-2 border-none hover:scale-105 duration-500 h-10 mx-auto flex my-2 w-1/2"><div className='text-base'>Hostel ID Card : {singleApplication.allotedStatus==="accepted"?"Download/View Your Hostel ID Card":"You have not been alloted a hostel"}</div>
                         </Link>}
                             </div>
 

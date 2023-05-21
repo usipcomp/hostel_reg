@@ -89,7 +89,7 @@ function App() {
     StudentApplicationStatus = <Login showAlert={showAlert}></Login>
     StudentOccupancyHistory = <Login showAlert={showAlert}></Login>
     HostelID = <Login showAlert={showAlert}></Login>;
-    hostelIDCard = <HostelIDCard></HostelIDCard>
+    hostelIDCard = <Login></Login>
     
   } else {
     homeContent = <StudentHome></StudentHome>;

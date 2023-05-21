@@ -60,6 +60,7 @@ function RegForm({ showAlert }) {
         tempFormData[field] = event.target[i].value;
       }
     }
+    tempFormData.ProfilePic = tempFormData.roll_no;
     // console.log(tempFormData)
     // axios.post("http://localhost:4000/hostelreg/applications/auth/upload", photo)
     //   .then(function () {
