@@ -8,11 +8,11 @@ const styles = StyleSheet.create({
         fontSize: 12,
         backgroundColor: '#fff',
     },
-    img:{
-        width:120,
-        height:120,
-        marginHorizontal:"auto",
-        marginVertical:10,
+    img: {
+        width: 120,
+        height: 120,
+        marginHorizontal: "auto",
+        marginVertical: 10,
     },
     container: {
         flex: 1,
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         alignContent: "center",
         //   justifyContent: 'center',
         padding: 0,
-        marginTop:15,
+        marginTop: 15,
     },
     topSection: {
         marginBottom: 20,
@@ -31,43 +31,43 @@ const styles = StyleSheet.create({
     column: {
         marginHorizontal: 10,
     },
-    topRightContent:{
-        marginLeft:"auto",
-        marginRight:15,
+    topRightContent: {
+        marginLeft: "auto",
+        marginRight: 15,
     },
     small: {
         fontSize: 8,
     },
-    data:{
-        marginLeft:"auto",
-        fontSize:10,
-        
+    data: {
+        marginLeft: "auto",
+        fontSize: 10,
+
     },
     middleSection: {
         marginBottom: 0,
     },
-    dataSections:{
+    dataSections: {
         flexDirection: 'row',
-        borderBottom:"1px",
-        width:275,
+        borderBottom: "1px",
+        width: 275,
     },
-    headers:{
-        fontFamily:'Helvetica-Bold',
-        borderBottom:'1px',
-        width:275,
+    headers: {
+        fontFamily: 'Helvetica-Bold',
+        borderBottom: '1px',
+        width: 275,
     },
-    longtext:{
-        letterSpacing:0,
-        marginLeft:"auto",
-        fontSize:10,
+    longtext: {
+        letterSpacing: 0,
+        marginLeft: "auto",
+        fontSize: 10,
         // flexWrap:"wrap"
-        flex:1,
+        flex: 1,
     },
-    nxtLineHeaders:{
-        fontFamily:"Helvetica-Bold",
-        borderBottom:'1px',
-        width:275,
-        marginTop:20,
+    nxtLineHeaders: {
+        fontFamily: "Helvetica-Bold",
+        borderBottom: '1px',
+        width: 275,
+        marginTop: 20,
     }
 });
 const topSectionLeftContent = `DELHI TECHNOLOGICAL UNIVERSITY
@@ -77,7 +77,7 @@ const topSectionRightContent = `HOSTEL REGISTRATION FORM\n\t\t\t\t\t\t\t\t\tACAD
 
 const address = `SHAHBAD,BAWANA ROAD,DELHI,PH-27852204`;
 const middleSectionContent = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. \nSed sagittis, tortor nec\n lacinia consequat, felis mi fringilla libero, a lacinia sem neque vel massa.\n Morbi ut diam id felis condimentum posuere. Nulla facilisi. Vivamus id velit odio. Aliquam erat volutpat.`;
-Font.register({ family: 'Helvetica-Bold'});
+Font.register({ family: 'Helvetica-Bold' });
 
 const StudentApplicationView = () => {
     const { id } = useParams();
@@ -94,11 +94,10 @@ const StudentApplicationView = () => {
                 const json = await resp.json();
                 console.log(json)
                 setApplication(json[0]);
-                const photoresponse = await fetch(`http://localhost:4000/upload/${json[0].ProfilePic.slice(0,4)+":"+json[0].ProfilePic.slice(5,7)+":"+json[0].ProfilePic.slice(8)}.png`,{
-                            method:"GET",
-                        })
-                        // 
-                        // console.log(photoresponse)
+                // console.log(application.ProfilePic)
+                const photoresponse = await fetch(`http://localhost:4000/upload/${json[0].ProfilePic.slice(0, 4) + "_" + json[0].ProfilePic.slice(5, 7) + "_" + json[0].ProfilePic.slice(8)}.jpg`, {
+                    method: "GET",
+                })
                 const newJson = await photoresponse.json();
                 const array = [newJson];
                 console.log(array)
@@ -116,7 +115,7 @@ const StudentApplicationView = () => {
                 {/* this is the complete view of the student application */}
                 <div className="stud_app" style={{ width: "100%", height: "100vh", fontSize: "small" }}>
                     <PDFViewer style={{ width: "100%", height: "100%", fontSize: 'small' }} showToolbar={true}>
-                        <Document title={application.name+" "+application.roll_no} >
+                        <Document title={application.name + " " + application.roll_no} >
                             <Page size="A4" style={styles.page}>
                                 <View style={styles.container}>
                                     <View style={styles.topSection}>
@@ -131,9 +130,9 @@ const StudentApplicationView = () => {
                                         </View>
                                     </View>
                                     <View style={styles.middleSection}>
-                                        {photo.map((singleData,index)=>{
+                                        {photo.map((singleData, index) => {
                                             const base64String = btoa(String.fromCharCode(... new Uint8Array(singleData.img.data.slice())))
-                                            return <Image key={index} style={styles.img} src={`data:image/png;base64,${base64String}`}/>
+                                            return <Image key={index} style={styles.img} src={`data:image/png;base64,${base64String}`} />
                                         })}
                                         {/* {<Image style={styles.img} src={'http://localhost:4000/upload/2K19:AE:035.png'}></Image>} */}
                                         <View style={styles.columnsContainer}>
@@ -184,7 +183,7 @@ const StudentApplicationView = () => {
                                                 <View style={styles.dataSections}>
                                                     <Text>{`Father Phone No`}</Text>
                                                     <Text style={styles.data}>{application.father_phone_no
-}</Text>
+                                                    }</Text>
                                                 </View>
                                                 <View style={styles.dataSections}>
                                                     <Text>{`Father Email`}</Text>
@@ -195,14 +194,14 @@ const StudentApplicationView = () => {
                                                     <Text style={styles.data}>{application.father_occupation}</Text>
                                                 </View>
                                                 <View style={styles.dataSections}>
-                                                    <Text style={{marginRight:10}}>{`Father Office Address`}</Text>
+                                                    <Text style={{ marginRight: 10 }}>{`Father Office Address`}</Text>
                                                     <Text style={styles.longtext}>{application.father_office_address
-}</Text>
+                                                    }</Text>
                                                 </View>
                                                 <View style={styles.dataSections}>
                                                     <Text>{`Father Office Phone No`}</Text>
                                                     <Text style={styles.data}>{application.father_office_phone_no
-}</Text>
+                                                    }</Text>
                                                 </View>
                                                 {/*
                                                 <View style={styles.dataSections}>
@@ -216,7 +215,7 @@ const StudentApplicationView = () => {
 }</Text>
                                                 </View> 
                                                 */}
-                                               
+
                                                 {/* Mother data */}
                                                 <View style={styles.dataSections}>
                                                     <Text>{`Mother Name`}</Text>
@@ -229,21 +228,21 @@ const StudentApplicationView = () => {
                                                 <View style={styles.dataSections}>
                                                     <Text>{`Mother Occupation`}</Text>
                                                     <Text style={styles.data}>{application.mother_occupation
-}</Text>
+                                                    }</Text>
                                                 </View>
                                                 <View style={styles.dataSections}>
-                                                    <Text style={{marginRight:10}}>{`Mother Office Address`}</Text>
+                                                    <Text style={{ marginRight: 10 }}>{`Mother Office Address`}</Text>
                                                     <Text style={styles.longtext}>{application.mother_office_address
-}</Text>
+                                                    }</Text>
                                                 </View>
                                                 <View style={styles.dataSections}>
                                                     <Text>{`Mother Office Phone No`}</Text>
                                                     <Text style={styles.data}>{application.mother_office_phone_no
-}</Text>
+                                                    }</Text>
                                                 </View>
                                                 <Text style={styles.nxtLineHeaders}>RESIDENTIAL DETAILS</Text>
                                                 <View style={styles.dataSections}>
-                                                    <Text style={{marginRight:10}}>{`Home Address`}</Text>
+                                                    <Text style={{ marginRight: 10 }}>{`Home Address`}</Text>
                                                     <Text style={styles.longtext}>{application.home_address}</Text>
                                                 </View>
                                                 <View style={styles.dataSections}>
@@ -266,20 +265,20 @@ const StudentApplicationView = () => {
                                                 <View style={styles.dataSections}>
                                                     <Text>{`Gaurdian Name`}</Text>
                                                     <Text style={styles.data}>{application.local_guardian_name}</Text>
-                                                </View> 
+                                                </View>
                                                 <View style={styles.dataSections}>
-                                                    <Text style={{marginRight:10}}>{`Gaurdian Address`}</Text>
+                                                    <Text style={{ marginRight: 10 }}>{`Gaurdian Address`}</Text>
                                                     <Text style={styles.longtext}>{application.local_guardian_address}</Text>
-                                                </View> 
+                                                </View>
                                                 <View style={styles.dataSections}>
                                                     <Text>{`Gaurdian Phone No`}</Text>
                                                     <Text style={styles.data}>{application.local_guardian_phone_no}</Text>
-                                                </View> 
+                                                </View>
                                                 <View style={styles.dataSections}>
                                                     <Text>{`Gaurdian Email`}</Text>
                                                     <Text style={styles.data}>{application.local_guardian_email}</Text>
-                                                </View> 
-                                               
+                                                </View>
+
                                             </View>
                                             <View style={styles.column}>
                                                 <Text style={styles.headers}>ACADEMIC DETAILS</Text>
@@ -326,33 +325,33 @@ const StudentApplicationView = () => {
                                                     <Text style={styles.data}>{application.bank_branch}</Text>
                                                 </View>
                                                 <View style={styles.dataSections}>
-                                                    <Text style={{marginRight:10}}>{`Bank Address`}</Text>
+                                                    <Text style={{ marginRight: 10 }}>{`Bank Address`}</Text>
                                                     <Text style={styles.longtext}>{application.bank_address}</Text>
                                                 </View>
                                                 <Text style={styles.nxtLineHeaders}>CORRESPONDING ADDRESS</Text>
                                                 <View style={styles.dataSections}>
-                                                    <Text style={{marginRight:10}}>{`Corr. Address`}</Text>
+                                                    <Text style={{ marginRight: 10 }}>{`Corr. Address`}</Text>
                                                     <Text style={styles.longtext}>{application.corr_address}</Text>
-                                                </View> 
+                                                </View>
                                                 <View style={styles.dataSections}>
                                                     <Text>{`Corr. City`}</Text>
                                                     <Text style={styles.data}>{application.corr_city}</Text>
-                                                </View> 
+                                                </View>
                                                 <View style={styles.dataSections}>
                                                     <Text>{`Corr. State`}</Text>
                                                     <Text style={styles.data}>{application.corr_state}</Text>
-                                                </View> 
+                                                </View>
                                                 <View style={styles.dataSections}>
                                                     <Text>{`Corr. Country`}</Text>
                                                     <Text style={styles.data}>{application.corr_country}</Text>
-                                                </View> 
+                                                </View>
                                                 <View style={styles.dataSections}>
                                                     <Text>{`Corr. Pincode`}</Text>
                                                     <Text style={styles.data}>{application.corr_pincode}</Text>
-                                                </View> 
-                                               
+                                                </View>
+
                                             </View>
-                                            
+
                                         </View>
                                     </View>
                                 </View>

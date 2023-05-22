@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
   },
   filename:(req,file,cb)=>{
     console.log(file)
-    cb(null,file.originalname)
+    cb(null,req.body.filename.slice(0, 4) + "_" + req.body.filename.slice(5, 7) + "_" + req.body.filename.slice(8)+".jpg")
   }
 })
 const upload = multer({storage:storage});
@@ -38,12 +38,11 @@ app.get("/upload/:filename",(req,res)=>{
   const bufferdata = fs.readFileSync("./images/"+searchQuery)
   res.status(201).json({img:bufferdata});
 })
-// app.use("/",express.static(path.join(__dirname,"/images"),(req,res)=>{
-//   console.log(__dirname)
-// }))
+app.use("/images",express.static(path.join(__dirname,"/images")))
 // console.log(__dirname)
 
 app.post("/upload",upload.single('image'),(req,res)=>{
+  console.log("body is",req.body,"file is",req.file)
   res.status(200).send("uploaded")
 })
 app.use("/hostelreg/applications/auth", require("./routes/auth"));

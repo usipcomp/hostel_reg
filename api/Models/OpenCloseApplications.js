@@ -10,6 +10,7 @@ const OpenCloseApplicationsSchema = Schema({
   mtechThirdYr: { type: Boolean },
   mtechSecondYr: { type: Boolean },
   mtechFirstYr: { type: Boolean },
+  acceptResponses:{type:Boolean}
 });
 const OpenCloseApplications = mongoose.model("opencloseapplications",OpenCloseApplicationsSchema)
 module.exports = OpenCloseApplications;

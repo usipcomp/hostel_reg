@@ -105,7 +105,7 @@ const HostelDCard = () => {
             });
             const json = await resp.json();
             setApplication(json[0]);
-            const photoresponse = await fetch(`http://localhost:4000/upload/2K19:AE:035.png`, {
+            const photoresponse = await fetch(`http://localhost:4000/upload/${json[0].ProfilePic.slice(0, 4) + "_" + json[0].ProfilePic.slice(5, 7) + "_" + json[0].ProfilePic.slice(8)}.jpg`, {
                 method: "GET",
             })
             
