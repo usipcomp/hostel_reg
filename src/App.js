@@ -98,14 +98,14 @@ function App() {
     ManageApplicationContent = <ManageApplication showAlert={showAlert}></ManageApplication>;
     ApplicationView = <StudentApplicationView></StudentApplicationView>
     RegFormContent = <RegForm showAlert={showAlert}></RegForm>;
-    loginContent = <StudentHome></StudentHome>;
+    loginContent = <StudentHome showAlert={showAlert}></StudentHome>;
     ManageHostelsContent = <ManageHostels showAlert={showAlert}></ManageHostels>;
     NewHostelContent = <NewHostel showAlert={showAlert}></NewHostel>;
     rejectedapplications = <RejectedApplications showAlert={showAlert}></RejectedApplications>
-    AdminApplicationStatus = <AdminAppStatus></AdminAppStatus>
-    StudentApplicationStatus = <StudentAppStatus></StudentAppStatus>
-    StudentOccupancyHistory = <OccupancyHistoryStudent></OccupancyHistoryStudent>
-    HostelID = <MyProfile></MyProfile>
+    AdminApplicationStatus = <AdminAppStatus showAlert={showAlert}></AdminAppStatus>
+    StudentApplicationStatus = <StudentAppStatus showAlert={showAlert}></StudentAppStatus>
+    StudentOccupancyHistory = <OccupancyHistoryStudent showAlert={showAlert}></OccupancyHistoryStudent>
+    HostelID = <MyProfile showAlert={showAlert}></MyProfile>
     hostelIDCard = <HostelIDCard></HostelIDCard>
   }
   return (

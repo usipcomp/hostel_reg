@@ -10,6 +10,7 @@ import Alert from "../Components/Alert";
 function RegForm({ showAlert }) {
   const user = useSelector((state) => state.user.currentUser.student);
   const [acceptingResponses, setAcceptingResponses] = useState(null);
+  const [image, setImage] = useState()
   const genderOptions = [
     { label: "Male", value: "male" },
     { label: "Female", value: "female" },
@@ -49,7 +50,6 @@ function RegForm({ showAlert }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // const photo = event.target[0].value
     let tempFormData = {};
     tempFormData["allotedStatus"] = "pending";
     for (let i = 0; i < event.target.length; i++) {
@@ -60,16 +60,28 @@ function RegForm({ showAlert }) {
         tempFormData[field] = event.target[i].value;
       }
     }
+    console.log(event.target[0].files)
     tempFormData.ProfilePic = tempFormData.roll_no;
-    // console.log(tempFormData)
-    // axios.post("http://localhost:4000/hostelreg/applications/auth/upload", photo)
-    //   .then(function () {
-    //     console.log("hogya");
-    //     showAlert("success", "photo uploaded!!")
-    //   })
-    //   .catch(function (err) {
-    //     showAlert("danger", "error occured")
-    //   })
+    const form_data = new FormData();
+    form_data.append('filename',tempFormData.roll_no)
+    form_data.append('image',image);
+    // const resp = await fetch("http://localhost:4000/upload",{
+    //   method:"POST",
+    //   headers:{
+    //     'Content-Type':'multipart/form-data'
+    //   },
+    //   body:JSON.stringify({
+    //     roll_no:tempFormData.roll_no,
+    //   }),
+    //   file:photo
+    // })
+    axios.post("http://localhost:4000/upload", form_data, { headers: { "Content-Type": "multipart/form-data" } })
+         .then(res => {
+            console.log(res)
+         })
+         .catch(error => {
+            console.log(error)
+         })
     axios
       .post(
         "http://localhost:4000/hostelreg/applications/auth/application",
@@ -98,7 +110,6 @@ function RegForm({ showAlert }) {
         method: "GET"
       })
       const json = await response.json();
-      console.log(json)
       setAcceptingResponses(json.acceptResponses);
     }
     checkFormAcceptance()
@@ -106,27 +117,36 @@ function RegForm({ showAlert }) {
 
   return (
     <>
-      {true ? <div className="w-full bg-slate-100">
+      {acceptingResponses ? <div className="w-full bg-slate-100">
         <div className="sm:w-2/3 mx-auto sm:p-4">
           <h1 className="mx-auto font-bold text-5xl">HOSTEL ALLOTMENT FORM</h1>
           <h3 className="mx-auto font-semibold text-2xl">
             ACADEMIC YEAR 2022-2023
           </h3>
-          <form action="http://localhost:4000/upload" method="POST" encType="multipart/form-data">
+          {/* <form action="http://localhost:4000/upload" method="POST" encType="multipart/form-data">
           <h4 className="font-semibold text-2xl">Upload Photo</h4>
             <InputField
-              id="student_photo"
-              type="file"
-              label="Profile Pic"
-              name="image"
-            >
-            </InputField>
+                isDisabled
+                id="file_saveas"
+                label="Save As"
+                type="text"
+                name="saveAs"
+                value={user.roll_no}
+              ></InputField>
             <Button primary wide>
               Submit
             </Button>
-          </form>
-          <form className="m-10" onSubmit={(event) => handleSubmit(event)}>
+          </form> */}
+          <form className="m-10" onSubmit={(event) => handleSubmit(event)} encType="multipart/form-data">
             <h4 className="font-semibold text-2xl">Personal Details</h4>
+              <InputField
+                id="student_photo"
+                type="file"
+                label="Profile Pic"
+                name="image"
+                handleChange = {(event)=>setImage(event.target.files[0])}
+              >
+              </InputField>
             <div className="grid gap-6 mb-6 md:grid-cols-2 my-4">
               <InputField
                 isDisabled
