@@ -40,7 +40,7 @@ router.post(
         };
         success = true;
         const authToken = jwt.sign(data, JWT_SECRET);
-        return res.json({ success, student: user, authToken: authToken });
+        return res.json({ success, student: user,user_desgn:"student", authToken: authToken });
       }
 
       const passwordCompare = bcrypt.compareSync(
@@ -58,7 +58,7 @@ router.post(
       };
       success = true;
       const authToken = jwt.sign(data, JWT_SECRET);
-      return res.json({ success,user:"student", student: user, authToken: authToken });
+      return res.status(200).json({ success,user_desgn:"student", student: user, authToken: authToken });
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Internal Server Error");
@@ -83,7 +83,7 @@ router.post("/admin",
       }
       else if(getAdmin.password===password){
         const authToken = jwt.sign("admin444",JWT_SECRET);
-        return res.status(200).json({success:true,user:"admin",authToken:authToken});
+        return res.status(200).json({success:true,user_desgn:"admin",authToken:authToken});
       }
       else{
         return res.status(400).json({success:false,message:"Invalid Credentials"});

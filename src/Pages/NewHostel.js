@@ -3,9 +3,17 @@ import Dropdown from "../Components/Dropdown";
 import InputField from "../Components/InputField";
 import Button from "../Components/Button";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 function NewHostel() {
-
+  const user = useSelector((state) => state.user.currentUser);
+  if(user.user_desgn!=="admin"){
+    return <div className="max-w-sm mx-auto my-5 rounded overflow-hidden shadow-lg">
+    <div className="px-6 py-4">
+      <div className="font-bold text-xl mb-2"><font color="red">Error! </font>You are unauthorised. </div>
+    </div>
+  </div>
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
     let tempFormData = {};

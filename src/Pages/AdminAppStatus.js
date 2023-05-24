@@ -2,12 +2,15 @@ import React,{useState,useEffect} from 'react'
 import axios from 'axios';
 import { MdOutlinePictureAsPdf } from "react-icons/md";
 import { GiCancel } from "react-icons/gi";
-import { Link } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import Button from '../Components/Button';
+import { useSelector } from "react-redux";
 
 const AdminAppStatus = ({showAlert}) => {
   const [allotedApps, setAllotedApps] = useState([]);
   const [rejectedApps, setRejectedApps] = useState([])
+  const user = useSelector((state) => state.user.currentUser);
+  
   useEffect(() => {
     const getApplications = async () => {
       try {
@@ -110,6 +113,13 @@ const AdminAppStatus = ({showAlert}) => {
       </div>
     );
   });
+  if(user.user_desgn!=="admin"){
+    return <div className="max-w-sm mx-auto my-5 rounded overflow-hidden shadow-lg">
+    <div className="px-6 py-4">
+      <div className="font-bold text-xl mb-2"><font color="red">Error! </font>You are unauthorised. </div>
+    </div>
+  </div>
+  }
   return (
     <div className="h-fit min-h-screen bg-[#edf6f9] w-full">
 
