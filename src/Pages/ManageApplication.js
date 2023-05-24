@@ -1,9 +1,11 @@
 import React,{useState,useEffect} from "react";
 import Button from "../Components/Button";
-import Navbar from "../Components/Navbar";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 const ManageApplication = ({showAlert}) => {
+  const user = useSelector((state) => state.user.currentUser);
   const [applications, setApplications] = useState();
   const openCloseApplications = async(flag)=>{
     const response = await fetch("http://localhost:4000/hostels/acceptresponses",{
@@ -31,6 +33,13 @@ const ManageApplication = ({showAlert}) => {
     };
     getApplications();
   }, []);
+  if(user.user_desgn!=="admin"){
+    return <div className="max-w-sm mx-auto my-5 rounded overflow-hidden shadow-lg">
+    <div className="px-6 py-4">
+      <div className="font-bold text-xl mb-2"><font color="red">Error! </font>You are unauthorised. </div>
+    </div>
+  </div>
+  }
   return (
     <div className="w-full min-h-screen h-fit bg-[#edf6f9]">
 

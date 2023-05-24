@@ -14,6 +14,8 @@ import axios from "axios";
 function ManageHostels() {
   const dispatch = useDispatch();
   const hostel = useSelector((state) => state.hostel);
+  const user = useSelector((state) => state.user.currentUser);
+
   // const [updatehostel, setUpdatehostel] = useState({ HostelID: "", Name: "", Type: "", oneS: 0, twoS: 0, threeSAC:0, threeSNAC: 0 });
   const [prevID, setPrevID] = useState('');
   const [toggleButton, setToggleButton] = useState(false);
@@ -52,6 +54,13 @@ function ManageHostels() {
     { label: "Boys", value: "B" },
     { label: "Girls", value: "G" },
   ]
+  if(user.user_desgn!=="admin"){
+    return <div className="max-w-sm mx-auto my-5 rounded overflow-hidden shadow-lg">
+    <div className="px-6 py-4">
+      <div className="font-bold text-xl mb-2"><font color="red">Error! </font>You are unauthorised. </div>
+    </div>
+  </div>
+  }
   return (
     <>
       <div className="w-full min-h-screen h-fit bg-[#edf6f9]">

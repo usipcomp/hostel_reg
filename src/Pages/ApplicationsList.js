@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Button from "../Components/Button";
-import Navbar from "../Components/Navbar";
 import { MdOutlinePictureAsPdf } from "react-icons/md";
 import { GiCancel } from "react-icons/gi";
 import axios from "axios";
@@ -15,7 +14,6 @@ const ApplicationsList = ({showAlert}) => {
   const user = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
-    if(user.user==="admin"){
       const getApplications = async () => {
         try {
           const res = await axios.get(
@@ -30,11 +28,14 @@ const ApplicationsList = ({showAlert}) => {
         }
       };
       getApplications();
-    }
-    else{
-      alert("You are not authorised")
-    }
   }, []);
+  if(user.user_desgn!=="admin"){
+    return <div className="max-w-sm mx-auto my-5 rounded overflow-hidden shadow-lg">
+    <div className="px-6 py-4">
+      <div className="font-bold text-xl mb-2"><font color="red">Error! </font>You are unauthorised. </div>
+    </div>
+  </div>
+  }
   const remove_app = async(id)=>{
     const response = await fetch(`http://localhost:4000/hostelreg/applications/auth/application/${id}`,{
       method:"PUT",
