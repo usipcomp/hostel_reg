@@ -39,7 +39,7 @@ function App() {
     }, 2000);
   };
   let Links = [];
-  if (user && user.user !== "admin") {
+  if (user && user.user_desgn !== "admin") {
     Links = [
       { value: "My Profile", redirect: "/hostelid" },
       {
