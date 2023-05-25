@@ -109,7 +109,7 @@ const StudentApplicationView = () => {
         }
         getSingleApplication(id);
     }, [])
-    if (application && photo) {
+    if (application) {
         return (
             <div>
                 {/* this is the complete view of the student application */}
@@ -130,11 +130,7 @@ const StudentApplicationView = () => {
                                         </View>
                                     </View>
                                     <View style={styles.middleSection}>
-                                        {photo.map((singleData, index) => {
-                                            const base64String = btoa(String.fromCharCode(... new Uint8Array(singleData.img.data.slice())))
-                                            return <Image key={index} style={styles.img} src={`data:image/png;base64,${base64String}`} />
-                                        })}
-                                        {/* {<Image style={styles.img} src={'http://localhost:4000/upload/2K19:AE:035.png'}></Image>} */}
+                                        {<Image style={styles.img} src={`http://localhost:4000/images/${application.ProfilePic.slice(0, 4) + "_" + application.ProfilePic.slice(5, 7) + "_" + application.ProfilePic.slice(8)}.jpg`}></Image>}
                                         <View style={styles.columnsContainer}>
                                             <View style={styles.column}>
                                                 <Text style={styles.headers}>PERSONAL DETAILS</Text>
