@@ -167,6 +167,10 @@ router.post("/allocate", async (req, res) => {
   delhi.sort(compDist);
   delhiPWD.sort(compDist);
 
+  let finalApplications = outsideDelhiPWD.concat(outsideDelhi,mixPWD,mix,delhiPWD,delhi);
+  finalApplications.forEach((ele)=>{
+    console.log(ele.PWD,ele.region)
+  })
   console.log("Outside Delhi", outsideDelhiPWD, outsideDelhi);
   console.log("Mix", mixPWD, mix);
   console.log("Delhi", delhiPWD, delhi);
