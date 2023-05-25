@@ -1,41 +1,57 @@
-const readline = require('readline');
+const readline = require("readline");
 
 function calculatePriority(student) {
   const rl = readline.createInterface({
     input: process.stdin,
-    output: process.stdout
+    output: process.stdout,
   });
 
-  return new Promise(resolve => {
-    rl.question("Is the student already a hosteller? (y/n) ", str => {
+  return new Promise((resolve) => {
+    rl.question("Is the student already a hosteller? (y/n) ", (str) => {
       if (str === "y") resolve(1);
       else {
-        rl.question("Is the student outside Delhi? (y/n) ", str => {
+        rl.question("Is the student outside Delhi? (y/n) ", (str) => {
           if (str === "y") resolve(2);
           else {
-            rl.question("Is the student PWD? (y/n) ", str => {
+            rl.question("Is the student PWD? (y/n) ", (str) => {
               if (str === "y") resolve(3);
               else {
-                rl.question("Is the student outside Delhi but schooling from Delhi? (y/n) ", str => {
-                  if (str === "y") resolve(4);
-                  else {
-                    rl.question("Is the student from Delhi with medical issues? (y/n) ", str => {
-                      if (str === "y") resolve(5);
-                      else {
-                        rl.question("Are the student's parents transferred to another city? (y/n) ", str => {
-                          if (str === "y") resolve(6);
+                rl.question(
+                  "Is the student outside Delhi but schooling from Delhi? (y/n) ",
+                  (str) => {
+                    if (str === "y") resolve(4); //Calculate distance here
+                    else {
+                      rl.question(
+                        "Is the student from Delhi with medical issues? (y/n) ",
+                        (str) => {
+                          if (str === "y") resolve(5);
                           else {
-                            rl.question("What is the distance of the student's residence from DTU? (number) ", num => {
-                              const distance = parseInt(num);
-                              resolve(distance > 0 ? 7 + distance : Number.MAX_SAFE_INTEGER);
-                              rl.close();
-                            });
+                            rl.question(
+                              "Are the student's parents transferred to another city? (y/n) ",
+                              (str) => {
+                                if (str === "y") resolve(6);
+                                else {
+                                  rl.question(
+                                    "What is the distance of the student's residence from DTU? (number) ",
+                                    (num) => {
+                                      const distance = parseInt(num);
+                                      resolve(
+                                        distance > 0
+                                          ? 7 + distance
+                                          : Number.MAX_SAFE_INTEGER
+                                      );
+                                      rl.close();
+                                    }
+                                  );
+                                }
+                              }
+                            );
                           }
-                        });
-                      }
-                    });
+                        }
+                      );
+                    }
                   }
-                });
+                );
               }
             });
           }
@@ -70,12 +86,12 @@ const bedsAvailable = [];
 
 const rl = readline.createInterface({
   input: process.stdin,
-  output: process.stdout
+  output: process.stdout,
 });
 
 function getInput(question) {
-  return new Promise(resolve => {
-    rl.question(question, input => {
+  return new Promise((resolve) => {
+    rl.question(question, (input) => {
       resolve(parseInt(input));
     });
   });

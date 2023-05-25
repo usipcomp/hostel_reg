@@ -18,7 +18,14 @@ const ApplicationSchema = Schema(
       type: String,
       enum: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"],
     },
-    region: { type: String, enum: ["Delhi", "Outside Delhi"] },
+    region: {
+      type: String,
+      enum: [
+        "Delhi",
+        "Outside Delhi",
+        "Outside Delhi but schooling from Delhi",
+      ],
+    },
     sgpa: { type: Number },
     chronic_problems: { type: Array },
     preferences: { type: Array },
@@ -57,7 +64,8 @@ const ApplicationSchema = Schema(
     sign: { type: String },
     discrepancy: { type: String },
     ProfilePic: { type: String },
-    allotedStatus:{type:String},
+    allotedStatus: { type: String },
+    PWD: { type: Boolean },
   },
   { timestamps: true }
 );

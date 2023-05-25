@@ -14,16 +14,16 @@ import ApplicationsList from "./Pages/ApplicationsList";
 import ManageApplication from "./Pages/ManageApplication";
 import ManageHostels from "./Pages/ManageHostels";
 import NewHostel from "./Pages/NewHostel";
-import AdminLogin from "./Pages/AdminLogin"
-import StudentApplicationView from "./Pages/StudentApplicationView"
+import AdminLogin from "./Pages/AdminLogin";
+import StudentApplicationView from "./Pages/StudentApplicationView";
 import RejectedApplications from "./Pages/RejectedApplications";
 import AdminAppStatus from "./Pages/AdminAppStatus";
 import StudentAppStatus from "./Pages/StudentAppStatus";
 import OccupancyHistoryStudent from "./Pages/OccupancyHistoryStudent";
 import Navbar from "./Components/Navbar";
-import "./App.css"
+import "./App.css";
 import MyProfile from "./Pages/MyProfile";
-import HostelIDCard from "./Pages/HostelDCard"
+import HostelIDCard from "./Pages/HostelDCard";
 import Alert from "./Components/Alert";
 
 function App() {
@@ -32,14 +32,14 @@ function App() {
   const showAlert = (type, display) => {
     setAlert({
       theme: type,
-      message: display
-    })
+      message: display,
+    });
     setTimeout(() => {
-      setAlert(null)
+      setAlert(null);
     }, 2000);
-  }
-  let Links=[]
-  if(user && user.user_desgn!=="admin"){
+  };
+  let Links = [];
+  if (user && user.user !== "admin") {
     Links = [
       { value: "My Profile", redirect: "/hostelid" },
       {
@@ -49,9 +49,8 @@ function App() {
       { value: "Occupancy History", redirect: "/occupancyhistory" },
       { value: "New Application", redirect: "/application" },
     ];
-  }
-  else{
-  Links = [
+  } else {
+    Links = [
       { value: "Open/Close Application", redirect: "/manageapplications" },
       { value: "Submitted Applications", redirect: "/submittedapplications" },
       { value: "Rejected Application", redirect: "/rejected_applications" },
@@ -74,7 +73,7 @@ function App() {
     HostelID,
     hostelIDCard,
     NewHostelContent;
-    console.log(user);
+  console.log(user);
   if (!user) {
     homeContent = <Login showAlert={showAlert}></Login>;
     AdminHomeContent = <AdminLogin showAlert={showAlert}></AdminLogin>;
@@ -84,34 +83,47 @@ function App() {
     loginContent = <Login showAlert={showAlert}></Login>;
     ManageHostelsContent = <AdminLogin showAlert={showAlert}></AdminLogin>;
     NewHostelContent = <AdminLogin showAlert={showAlert}></AdminLogin>;
-    rejectedapplications =  <AdminLogin showAlert={showAlert}></AdminLogin>;
-    AdminApplicationStatus =  <AdminLogin showAlert={showAlert}></AdminLogin>;
-    StudentApplicationStatus = <Login showAlert={showAlert}></Login>
-    StudentOccupancyHistory = <Login showAlert={showAlert}></Login>
+    rejectedapplications = <AdminLogin showAlert={showAlert}></AdminLogin>;
+    AdminApplicationStatus = <AdminLogin showAlert={showAlert}></AdminLogin>;
+    StudentApplicationStatus = <Login showAlert={showAlert}></Login>;
+    StudentOccupancyHistory = <Login showAlert={showAlert}></Login>;
     HostelID = <Login showAlert={showAlert}></Login>;
-    hostelIDCard = <Login></Login>
-    
+    hostelIDCard = <Login></Login>;
   } else {
     homeContent = <StudentHome></StudentHome>;
     AdminHomeContent = <AdminHome></AdminHome>;
-    ApplicationsListContent = <ApplicationsList showAlert={showAlert}></ApplicationsList>;
-    ManageApplicationContent = <ManageApplication showAlert={showAlert}></ManageApplication>;
-    ApplicationView = <StudentApplicationView></StudentApplicationView>
+    ApplicationsListContent = (
+      <ApplicationsList showAlert={showAlert}></ApplicationsList>
+    );
+    ManageApplicationContent = (
+      <ManageApplication showAlert={showAlert}></ManageApplication>
+    );
+    ApplicationView = <StudentApplicationView></StudentApplicationView>;
     RegFormContent = <RegForm showAlert={showAlert}></RegForm>;
     loginContent = <StudentHome showAlert={showAlert}></StudentHome>;
-    ManageHostelsContent = <ManageHostels showAlert={showAlert}></ManageHostels>;
+    ManageHostelsContent = (
+      <ManageHostels showAlert={showAlert}></ManageHostels>
+    );
     NewHostelContent = <NewHostel showAlert={showAlert}></NewHostel>;
-    rejectedapplications = <RejectedApplications showAlert={showAlert}></RejectedApplications>
-    AdminApplicationStatus = <AdminAppStatus showAlert={showAlert}></AdminAppStatus>
-    StudentApplicationStatus = <StudentAppStatus showAlert={showAlert}></StudentAppStatus>
-    StudentOccupancyHistory = <OccupancyHistoryStudent showAlert={showAlert}></OccupancyHistoryStudent>
-    HostelID = <MyProfile showAlert={showAlert}></MyProfile>
-    hostelIDCard = <HostelIDCard></HostelIDCard>
+    rejectedapplications = (
+      <RejectedApplications showAlert={showAlert}></RejectedApplications>
+    );
+    AdminApplicationStatus = (
+      <AdminAppStatus showAlert={showAlert}></AdminAppStatus>
+    );
+    StudentApplicationStatus = (
+      <StudentAppStatus showAlert={showAlert}></StudentAppStatus>
+    );
+    StudentOccupancyHistory = (
+      <OccupancyHistoryStudent showAlert={showAlert}></OccupancyHistoryStudent>
+    );
+    HostelID = <MyProfile showAlert={showAlert}></MyProfile>;
+    hostelIDCard = <HostelIDCard></HostelIDCard>;
   }
   return (
     <div>
       <Router>
-        {user?<Navbar Links={Links}></Navbar>:""}
+        {user ? <Navbar Links={Links}></Navbar> : ""}
         <Alert alert={alert}></Alert>
         <Routes>
           <Route path="/login" element={loginContent}></Route>
@@ -124,24 +136,29 @@ function App() {
             path="/manageapplications"
             element={ManageApplicationContent}
           ></Route>
-          <Route
-            path="/:id"
-            element={ApplicationView}
-          ></Route>
-          <Route
-            path="/hostelid/:id"
-            element={hostelIDCard}
-          ></Route>
+          <Route path="/:id" element={ApplicationView}></Route>
+          <Route path="/hostelid/:id" element={hostelIDCard}></Route>
           <Route path="/application" element={RegFormContent}></Route>
           <Route path="/" element={homeContent}></Route>
           <Route path="/managehostels" element={ManageHostelsContent}></Route>
           <Route path="/newhostel" element={NewHostelContent}></Route>
-          <Route path="/rejected_applications" element={rejectedapplications}></Route>
-          <Route path="/admin_application_status" element={AdminApplicationStatus}></Route>
-          <Route path="/student_application_status" element={StudentApplicationStatus}></Route>
-          <Route path="/occupancyhistory" element={StudentOccupancyHistory}></Route>
+          <Route
+            path="/rejected_applications"
+            element={rejectedapplications}
+          ></Route>
+          <Route
+            path="/admin_application_status"
+            element={AdminApplicationStatus}
+          ></Route>
+          <Route
+            path="/student_application_status"
+            element={StudentApplicationStatus}
+          ></Route>
+          <Route
+            path="/occupancyhistory"
+            element={StudentOccupancyHistory}
+          ></Route>
           <Route path="/hostelid" element={HostelID}></Route>
-
         </Routes>
       </Router>
     </div>

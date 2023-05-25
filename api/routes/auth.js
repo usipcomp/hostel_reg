@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const Hostel_Applications = require("../Models/Hostel_Applications");
-const OccupancyHistory = require("../Models/OccupancyHistory")
-const Beds = require("../Models/Beds")
-const Prices = require("../Models/Prices")
-const Hostels = require("../Models/Hostels")
+const OccupancyHistory = require("../Models/OccupancyHistory");
+const Beds = require("../Models/Beds");
+const Prices = require("../Models/Prices");
+const Hostels = require("../Models/Hostels");
 // Route 1 : Creating create user endpoint :POST /api/routes/auth/createuser : no login req
 router.post(
   "/application",
@@ -43,7 +43,7 @@ router.post(
       // }
       // creating user
       const newUser = new Hostel_Applications({
-        allotedStatus:req.body.allotedStatus,
+        allotedStatus: req.body.allotedStatus,
         roll_no: req.body.roll_no,
         name: req.body.name,
         email: req.body.email,
@@ -99,8 +99,10 @@ router.post(
         local_guardian_email: req.body.local_guardian_email,
         sign: req.body.sign,
         discrepancy: req.body.discrepancy,
-        ProfilePic:req.body.ProfilePic,
+        ProfilePic: req.body.ProfilePic,
         TandC: req.body.TandC,
+        distance: req.body.distance,
+        PWD: req.body.PWD,
       });
       const savedUser = await newUser.save();
       console.log("success", savedUser);
@@ -122,11 +124,10 @@ router.get("/application", async (req, res) => {
 router.get("/application/:id", async (req, res) => {
   try {
     const app_id = req.params.id;
-    const foundApplication = await Hostel_Applications.find({_id:app_id});
-    if(!foundApplication){
-      res.status(404).json({message:"Not found"});
-    }
-    else{
+    const foundApplication = await Hostel_Applications.find({ _id: app_id });
+    if (!foundApplication) {
+      res.status(404).json({ message: "Not found" });
+    } else {
       res.status(200).json(foundApplication);
     }
   } catch (err) {
@@ -136,11 +137,12 @@ router.get("/application/:id", async (req, res) => {
 router.post("/get_application_details", async (req, res) => {
   try {
     const roll_no = req.body.roll_no;
-    const foundApplication = await Hostel_Applications.find({roll_no:roll_no});
-    if(!foundApplication){
-      res.status(404).json({message:"Not found"});
-    }
-    else{
+    const foundApplication = await Hostel_Applications.find({
+      roll_no: roll_no,
+    });
+    if (!foundApplication) {
+      res.status(404).json({ message: "Not found" });
+    } else {
       res.status(200).json(foundApplication[0]);
     }
   } catch (err) {
@@ -150,22 +152,24 @@ router.post("/get_application_details", async (req, res) => {
 router.put("/application/:id", async (req, res) => {
   try {
     const app_id = req.params.id;
-    let app = await Hostel_Applications.find({_id:app_id});
-    if(!app){
+    let app = await Hostel_Applications.find({ _id: app_id });
+    if (!app) {
       res.status(400).send("User Does Not exists");
-    }
-    else{
+    } else {
       const newUser = {};
-      console.log(req.body.allotedStatus)
-      if(req.body.allotedStatus==="rejected"){
+      console.log(req.body.allotedStatus);
+      if (req.body.allotedStatus === "rejected") {
         newUser.allotedStatus = "rejected";
-        console.log("this is false value")
-      }
-      else{
+        console.log("this is false value");
+      } else {
         newUser.allotedStatus = "pending";
-        console.log("this is true value")
+        console.log("this is true value");
       }
-      app = await Hostel_Applications.findByIdAndUpdate({_id:app_id},{$set:newUser},{new:true});
+      app = await Hostel_Applications.findByIdAndUpdate(
+        { _id: app_id },
+        { $set: newUser },
+        { new: true }
+      );
       return res.status(200).json(app);
     }
   } catch (err) {
@@ -173,49 +177,50 @@ router.put("/application/:id", async (req, res) => {
   }
 });
 // fetching the occupancy history of the student
-router.post("/occupancyhistory",async(req,res)=>{
+router.post("/occupancyhistory", async (req, res) => {
   try {
     const roll_no = req.body.roll_no;
-    const foundApplications = await OccupancyHistory.find({StudentRollNo:roll_no});
-    if(!foundApplications){
-      res.status(404).json({message:"Not found"});
-    }
-    else{
+    const foundApplications = await OccupancyHistory.find({
+      StudentRollNo: roll_no,
+    });
+    if (!foundApplications) {
+      res.status(404).json({ message: "Not found" });
+    } else {
       res.status(200).json(foundApplications);
     }
   } catch (err) {
     res.status(500).json(err);
   }
-})
-router.post("/getAllotedData",async(req,res)=>{
+});
+router.post("/getAllotedData", async (req, res) => {
   try {
-      const roll_no = req.body.roll_no;
-      const findOccupancy = await OccupancyHistory.findOne({StudentRollNo:roll_no})
-      // console.log(findOccupancy)
-      const {BedID} = findOccupancy;
-      // console.log(BedID+'')
-      const findBedData = await Beds.findOne({BedID:BedID});
-      // console.log(findBedData)
-      if(!findBedData){
-        res.status(404).json({message:"Not found"});
-      }
-      else{
-        const {RoomType,HostelID} = findBedData;
-        // console.log(RoomType);
-        const bedPrice = await Prices.findOne({Type:RoomType});
-        // console.log(bedPrice)
-        const HostelData = await Hostels.findOne({HostelID:HostelID});
-        // console.log(HostelData)
-        const object = {};
-        object.BedData = findBedData;
-        object.BedPriceData = bedPrice;
-        object.HostelData = HostelData;
-        // console.log(object)
-        res.status(200).json(object);
-      }
-
+    const roll_no = req.body.roll_no;
+    const findOccupancy = await OccupancyHistory.findOne({
+      StudentRollNo: roll_no,
+    });
+    // console.log(findOccupancy)
+    const { BedID } = findOccupancy;
+    // console.log(BedID+'')
+    const findBedData = await Beds.findOne({ BedID: BedID });
+    // console.log(findBedData)
+    if (!findBedData) {
+      res.status(404).json({ message: "Not found" });
+    } else {
+      const { RoomType, HostelID } = findBedData;
+      // console.log(RoomType);
+      const bedPrice = await Prices.findOne({ Type: RoomType });
+      // console.log(bedPrice)
+      const HostelData = await Hostels.findOne({ HostelID: HostelID });
+      // console.log(HostelData)
+      const object = {};
+      object.BedData = findBedData;
+      object.BedPriceData = bedPrice;
+      object.HostelData = HostelData;
+      // console.log(object)
+      res.status(200).json(object);
+    }
   } catch (error) {
     res.status(500).json(error);
   }
-})
+});
 module.exports = router;
