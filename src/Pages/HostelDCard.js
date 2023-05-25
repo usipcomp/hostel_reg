@@ -153,7 +153,7 @@ const HostelDCard = () => {
         <div>
             <div className="stud_app" style={{ width: "100%", height: "100vh", fontSize: "small" }}>
                 <PDFViewer style={{ width: "100%", height: "100%", fontSize: 'small' }}>
-                    {application && bednPriceData && photo ? <Document title={application.name + " " + application.roll_no}>
+                    {application && bednPriceData ? <Document title={application.name + " " + application.roll_no}>
                         <Page size="A4" style={styles.page}>
                             <View style={styles.container}>
                                 <View style={styles.column}>
@@ -161,10 +161,7 @@ const HostelDCard = () => {
                                     <Text style={styles.headers}>Hostel ID Card{`(Session : 2022-2023)`}</Text>
                                     <View style={styles.columnsContainer}>
                                         <View style={styles.columnData}>
-                                            {photo.map((singleData, index) => {
-                                                const base64String = btoa(String.fromCharCode(... new Uint8Array(singleData.img.data.slice())))
-                                                return <Image key={index} style={styles.img} src={`data:image/png;base64,${base64String}`} />
-                                            })}
+                                        {<Image style={styles.img} src={`http://localhost:4000/images/${application.ProfilePic.slice(0, 4) + "_" + application.ProfilePic.slice(5, 7) + "_" + application.ProfilePic.slice(8)}.jpg`}></Image>}
                                         </View>
                                         <View style={styles.columnsContainer}>
                                             <View style={styles.columnDataSecondary}>
