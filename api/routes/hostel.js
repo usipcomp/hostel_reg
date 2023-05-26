@@ -99,7 +99,7 @@ router.get("/", async (req, res) => {
 });
 // allotment algorithm
 router.post("/allocate", async (req, res) => {
-  const { applications, from, to, admn_year } = req.body;
+  const { applications, from, to, admn_year, current_year } = req.body;
 
   let outsideDelhi = [];
   let delhi = [];
@@ -167,71 +167,158 @@ router.post("/allocate", async (req, res) => {
   delhi.sort(compDist);
   delhiPWD.sort(compDist);
 
-  let finalApplications = outsideDelhiPWD.concat(outsideDelhi,mixPWD,mix,delhiPWD,delhi);
-  finalApplications.forEach((ele)=>{
-    console.log(ele.PWD,ele.region)
-  })
+  let finalApplications = outsideDelhiPWD.concat(
+    outsideDelhi,
+    mixPWD,
+    mix,
+    delhiPWD,
+    delhi
+  );
+  finalApplications.forEach((ele) => {
+    console.log(ele.PWD, ele.region);
+  });
   console.log("Outside Delhi", outsideDelhiPWD, outsideDelhi);
   console.log("Mix", mixPWD, mix);
   console.log("Delhi", delhiPWD, delhi);
 
-  // try {
-  //   console.log(applications);
-  //   const total_apps = applications.length;
-  //   const admissionYear = parseInt(admn_year);
-  //   // console.log(from,to,applications)
-  //   // console.log(req.body)
-  //   const bedIndfo = await Beds.find({ Occupancy: false });
-  //   // console.log(bedIndfo);
-  //   const total_beds = bedIndfo.length;
-  //   let pointer1 = 0;
-  //   let pointer2 = 0;
-  //   while (pointer1 < total_apps && pointer2 < total_beds) {
-  //     let newAllot = {};
-  //     if (applications[pointer1].year_of_admission === admissionYear) {
-  //       newAllot.ApplicationID = applications[pointer1].stu_id;
-  //       newAllot.Occupancy = true;
-  //       // console.log(newAllot)
-  //       // finding available beds and storing the data
-  //       const newAllotment = await Beds.findOneAndUpdate(
-  //         { Occupancy: false },
-  //         { $set: newAllot },
-  //         { new: true }
-  //       );
-  //       // console.log('level 2')
-  //       console.log(newAllotment);
-  //       // updating the occupancy history
-  //       const newOccupancy = await Occupancy.create({
-  //         BedID: newAllotment.BedID,
-  //         StudentRollNo: applications[pointer1].roll_no,
-  //         StudentYear: applications[pointer1].year_of_admission,
-  //         FromDate: from,
-  //         ToDate: to,
-  //         ApplicationNumber: newAllot.ApplicationID,
-  //       });
-  //       console.log(newOccupancy);
-  //       const newUser = {};
-  //       newUser.allotedStatus = "accepted";
-  //       app = await Hostel_Applications.findByIdAndUpdate(
-  //         { _id: applications[pointer1]._id },
-  //         { $set: newUser },
-  //         { new: true }
-  //       );
-  //       pointer1++;
-  //       pointer2++;
-  //     } else {
-  //       pointer1++;
-  //     }
-  //   }
-  //   const rejectedRemaining = await Hostel_Applications.updateMany(
-  //     { allotedStatus: "pending" },
-  //     { $set: { allotedStatus: "rejected" } },
-  //     { new: true }
-  //   );
-  //   res.status(200).send("got the data");
-  // } catch (error) {
-  //   res.status(500).send("Internal Server Error");
-  // }
+  try {
+    let newApplications = [
+      ...outsideDelhiPWD,
+      ...outsideDelhi,
+      ...mixPWD,
+      ...mix,
+      ...delhiPWD,
+      ...delhi,
+    ];
+    const total_apps = newApplications.length;
+    const admissionYear = parseInt(admn_year);
+
+    const BedsInfo = await Beds.find({ Occupancy: false });
+    let totalBeds = BedsInfo.length;
+
+    let pointer1 = 0;
+    let pointer2 = 0;
+
+    console.log("total_beds", totalBeds);
+
+    console.log("total_apps", total_apps);
+
+    while (pointer1 < total_apps && pointer2 < totalBeds) {
+      if (newApplications[pointer1].year_of_admission === admissionYear) {
+        console.log("Year of admission condition done");
+        let newOccupancy = new Occupancy({
+          BedID: BedsInfo[pointer2].BedID,
+          StudentRollNo: newApplications[pointer1].roll_no,
+          StudentYear: current_year,
+          FromDate: from,
+          ToDate: to,
+          ApplicationNumber: newApplications[pointer1]._id,
+        });
+        try {
+          const savedOccupancy = await newOccupancy.save();
+          try {
+            const updatedBed = await Beds.findByIdAndUpdate(
+              BedsInfo[pointer2]._id,
+              { Occupancy: true, ApplicationID: newApplications[pointer1]._id }
+            );
+            try {
+              const updatedApplication =
+                await Hostel_Applications.findByIdAndUpdate(
+                  newApplications[pointer1]._id,
+                  { allotedStatus: "accepted" }
+                );
+            } catch (err) {
+              console.log("application error", err);
+            }
+          } catch (err) {
+            console.log("bed error", err);
+          }
+        } catch (err) {
+          console.log("occupancy error", err);
+        }
+
+        pointer1++;
+        pointer2++;
+      } else {
+        pointer1++;
+      }
+    }
+    while (pointer1 < total_apps) {
+      const updatedApplication = await Hostel_Applications.findByIdAndUpdate(
+        newApplications[pointer1]._id,
+        { allotedStatus: "rejected" }
+      );
+    }
+
+    res.status(200);
+
+    // ------ ************* -------------------
+
+    // // console.log(from,to,applications)
+    // // console.log(req.body)
+    // let totalBeds = 0;
+    // // console.log(bedIndfo);
+    // const hostelsInfo = await Hostel.find({});
+
+    // for (let i = 0; i < hostelsInfo.length; i++) {
+    //   totalBeds =
+    //     totalBeds +
+    //     hostelsInfo[i].oneS +
+    //     hostelsInfo[i].twoS +
+    //     hostelsInfo[i].threeSAC +
+    //     hostelsInfo[i].threeSNAC;
+    // }
+
+    // console.log("Total Beds", totalBeds);
+    // let pointer1 = 0;
+    // let pointer2 = 0;
+    // while (pointer1 < total_apps && pointer2 < totalBeds) {
+    //   let newAllot = {};
+    //   if (newApplications[pointer1].year_of_admission === admissionYear) {
+    //     newAllot.ApplicationID = newApplications[pointer1].stu_id;
+    //     newAllot.Occupancy = true;
+    //     // console.log(newAllot)
+    //     // finding available beds and storing the data
+    //     const newBed = new Beds({
+    //       BedID: pointer2,
+    //       BedNo: pointer2,
+    //     });
+    //     // console.log('level 2')
+    //     console.log(newAllotment);
+    //     // updating the occupancy history
+    //     const newOccupancy = await Occupancy.create({
+    //       BedID: newAllotment.BedID,
+    //       StudentRollNo: applications[pointer1].roll_no,
+    //       StudentYear: applications[pointer1].year_of_admission,
+    //       FromDate: from,
+    //       ToDate: to,
+    //       ApplicationNumber: newAllot.ApplicationID,
+    //     });
+    //     console.log(newOccupancy);
+    //     const newUser = {};
+    //     newUser.allotedStatus = "accepted";
+    //     app = await Hostel_Applications.findByIdAndUpdate(
+    //       { _id: newApplications[pointer1]._id },
+    //       { $set: newUser },
+    //       { new: true }
+    //     );
+    //     pointer1++;
+    //     pointer2++;
+    //   } else {
+    //     pointer1++;
+    //   }
+    // }
+    // const rejectedRemaining = await Hostel_Applications.updateMany(
+    //   { allotedStatus: "pending" },
+    //   { $set: { allotedStatus: "rejected" } },
+    //   { new: true }
+    // );
+    // res.status(200).send("got the data");
+
+    // ------- ******************** ------------
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
 });
 router.post("/acceptresponses", async (req, res) => {
   try {

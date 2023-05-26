@@ -1,19 +1,19 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
 
 const BedSchema = Schema({
-  BedID: { type: Number },
+  BedID: { type: String },
   BedNo: { type: String },
-  RoomNo: { type: Number },
   RoomType: {
     type: String,
     enum: ["1S", "2S", "3SAC", "3SNAC"],
   },
-  HostelID: { type: String },
   Occupancy: { type: Boolean, enum: [true, false], default: false },
-  Floor: { type: Number },
-  ApplicationID: { type: Number },
+  Floor: { type: String },
+  ApplicationID: mongoose.Schema.ObjectId,
+  Year: [{ type: Number }],
+  Gender: { type: String, enum: ["Male", "Female"] },
 });
-const Beds = mongoose.model("beds",BedSchema)
+const Beds = mongoose.model("beds", BedSchema);
 module.exports = Beds;
