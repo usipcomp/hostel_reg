@@ -90,8 +90,11 @@ function App() {
     HostelID = <Login showAlert={showAlert}></Login>;
     hostelIDCard = <Login></Login>;
   } else {
-    homeContent = <StudentHome></StudentHome>;
-    AdminHomeContent = <AdminHome></AdminHome>;
+    if (user.user_desgn == "admin") {
+      AdminHomeContent = <AdminHome></AdminHome>;
+    } else if (user.user_desgn == "student") {
+      homeContent = <StudentHome></StudentHome>;
+    }
     ApplicationsListContent = (
       <ApplicationsList showAlert={showAlert}></ApplicationsList>
     );

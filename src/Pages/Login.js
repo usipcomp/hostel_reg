@@ -4,6 +4,7 @@ import Button from "../Components/Button";
 import axios from "axios";
 import { login } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 function Login() {
   const [rollNo, setRollNo] = useState("");
@@ -54,7 +55,9 @@ function Login() {
           Login
         </Button>
         <div className="w-full justify-between mt-4 flex">
-          <div className="font-semibold text-md my-auto">Not a student?</div>
+          <Link to="/admin" className="font-semibold text-md my-auto">
+            Not a student?
+          </Link>
         </div>
       </div>
     </div>
