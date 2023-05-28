@@ -10,7 +10,7 @@ mongoose.connect(MONGOOSE_URL, {
 });
 
 const seedBeds = async () => {
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 3; i++) {
     const currentBed = BedsInfo[i];
     let yearsInfo = [];
 
