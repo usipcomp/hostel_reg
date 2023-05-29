@@ -125,7 +125,7 @@ router.post("/allocate", async (req, res) => {
   for (let i = 0; i < outsideDelhi.length; i++) {
     if (outsideDelhi[i].PWD) {
       outsideDelhiPWD.push(outsideDelhi[i]);
-      outsideDelhi.splice(1, i);
+      outsideDelhi.splice(i, 1);
     }
   }
 
@@ -143,7 +143,7 @@ router.post("/allocate", async (req, res) => {
   for (let i = 0; i < mix.length; i++) {
     if (mix[i].PWD) {
       mixPWD.push(mix[i]);
-      mix.splice(1, i);
+      mix.splice(i, 1);
     }
   }
 
@@ -158,7 +158,7 @@ router.post("/allocate", async (req, res) => {
   for (let i = 0; i < delhi.length; i++) {
     if (delhi[i].PWD) {
       delhiPWD.push(delhi[i]);
-      delhi.splice(1, i);
+      delhi.splice(i, 1);
     }
   }
 
@@ -177,9 +177,6 @@ router.post("/allocate", async (req, res) => {
   finalApplications.forEach((ele) => {
     console.log(ele.PWD, ele.region);
   });
-  console.log("Outside Delhi", outsideDelhiPWD, outsideDelhi);
-  console.log("Mix", mixPWD, mix);
-  console.log("Delhi", delhiPWD, delhi);
 
   try {
     let newApplications = [
@@ -198,9 +195,8 @@ router.post("/allocate", async (req, res) => {
 
     let pointer1 = 0;
     let pointer2 = 0;
-
+    console.log(newApplications);
     console.log("total_beds", totalBeds);
-
     console.log("total_apps", total_apps);
 
     while (pointer1 < total_apps && pointer2 < totalBeds) {
@@ -243,11 +239,14 @@ router.post("/allocate", async (req, res) => {
         pointer1++;
       }
     }
+    console.log("pointer1", pointer1);
     while (pointer1 < total_apps) {
+      console.log(newApplications[pointer1].name);
       const updatedApplication = await Hostel_Applications.findByIdAndUpdate(
         newApplications[pointer1]._id,
         { allotedStatus: "rejected" }
       );
+      pointer1++;
     }
 
     res.status(200);

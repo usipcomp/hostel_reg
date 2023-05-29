@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const BedSchema = Schema({
   BedID: { type: String },
-  BedNo: { type: String },
+  HostelID: { type: String },
   RoomType: {
     type: String,
     enum: ["1S", "2S", "3SAC", "3SNAC"],

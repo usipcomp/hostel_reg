@@ -18,7 +18,7 @@ const seedBeds = async () => {
       yearsInfo = currentBed.Year.split(",");
       const newBed = new Beds({
         BedID: currentBed["SeatNo."],
-        BedNo: currentBed.HID,
+        HostelID: currentBed.HID,
         RoomType: currentBed["Room Type"],
         Occupancy: false,
         Floor: currentBed.Floor,
@@ -36,7 +36,7 @@ const seedBeds = async () => {
     } else {
       const newBed = new Beds({
         BedID: currentBed["SeatNo."],
-        BedNo: currentBed.HID,
+        HostelID: currentBed.HID,
         RoomType: currentBed["Room Type"],
         Occupancy: false,
         Floor: currentBed.Floor,
