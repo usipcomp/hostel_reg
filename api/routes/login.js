@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Admins = require("../Models/Admins");
 // console.log(process.env.JWT_SECRET);
-const JWT_SECRET = "mainhujian"
+const JWT_SECRET = "mainhujian";
 
 router.post(
   "/",
@@ -26,8 +26,8 @@ router.post(
     const { roll_no, password } = req.body;
     console.log(req.body);
     try {
-      let user = await Student.findOne({roll_no:roll_no});
-      console.log(user)
+      let user = await Student.findOne({ roll_no: roll_no });
+      console.log(user);
       if (!user) {
         return res
           .status(400)
@@ -40,7 +40,12 @@ router.post(
         };
         success = true;
         const authToken = jwt.sign(data, JWT_SECRET);
-        return res.json({ success, student: user,user_desgn:"student", authToken: authToken });
+        return res.json({
+          success,
+          student: user,
+          user_desgn: "student",
+          authToken: authToken,
+        });
       }
 
       const passwordCompare = bcrypt.compareSync(
@@ -58,42 +63,51 @@ router.post(
       };
       success = true;
       const authToken = jwt.sign(data, JWT_SECRET);
-      return res.status(200).json({ success,user_desgn:"student", student: user, authToken: authToken });
+      return res.status(200).json({
+        success,
+        user_desgn: "student",
+        student: user,
+        authToken: authToken,
+      });
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Internal Server Error");
     }
   }
 );
-router.post("/admin",
-  [
-    body("password", "Password cannot be blank").exists(),
-  ],
-  async(req,res)=>{
+router.post(
+  "/admin",
+  [body("password", "Password cannot be blank").exists()],
+  async (req, res) => {
     const error = validationResult(req);
-    if(!error.isEmpty()){
-      return res.status(400).json({success:false,errors:error.array()});
+    if (!error.isEmpty()) {
+      return res.status(400).json({ success: false, errors: error.array() });
     }
-    const adminID = req.adminID;
-    const password = req.password;
+    const adminID = req.body.adminID;
+    const password = req.body.password;
+    console.log(adminID, password);
     try {
-      const getAdmin = Admins.findOne({adminID:adminID});
-      if(!getAdmin){
-        return res.status(404).json({success:false,message:"Admin not found!"});
-      }
-      else if(getAdmin.password===password){
-        const authToken = jwt.sign("admin444",JWT_SECRET);
-        return res.status(200).json({success:true,user_desgn:"admin",authToken:authToken});
-      }
-      else{
-        return res.status(400).json({success:false,message:"Invalid Credentials"});
+      const getAdmin = await Admins.findOne({ adminID: adminID });
+      if (!getAdmin) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Admin not found!" });
+      } else if (getAdmin._doc.password === password) {
+        const authToken = jwt.sign("admin444", JWT_SECRET);
+        return res
+          .status(200)
+          .json({ success: true, user_desgn: "admin", authToken: authToken });
+      } else {
+        return res
+          .status(400)
+          .json({ success: false, message: "Invalid Credentials" });
       }
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Internal Server Error");
     }
-
-})
+  }
+);
 router.post(
   "/updatePassword/:id",
   [

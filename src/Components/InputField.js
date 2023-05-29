@@ -46,6 +46,7 @@ function InputField(props) {
         disabled={props.isDisabled}
         placeholder={props.placeholder}
         required={props.required}
+        defaultValue={props.default}
         accept="application/image"
         onChange={(e) => {
           handleChange(e);

@@ -4,6 +4,7 @@ import InputField from "../Components/InputField";
 import Button from "../Components/Button";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function RegForm({ showAlert }) {
   const user = useSelector((state) => state.user.currentUser.student);
@@ -14,6 +15,7 @@ function RegForm({ showAlert }) {
     { label: "Male", value: "male" },
     { label: "Female", value: "female" },
   ];
+  const navigate = useNavigate();
 
   let distanceInput = (
     <InputField
@@ -130,6 +132,7 @@ function RegForm({ showAlert }) {
       .then(function (response) {
         console.log("success", response.data);
         showAlert("success", "form submitted successfully");
+        navigate("/");
       })
       .catch(function (err) {
         console.log("oops", err);

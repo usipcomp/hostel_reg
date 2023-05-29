@@ -3,11 +3,11 @@ const { Schema } = mongoose;
 
 const ApplicationSchema = Schema(
   {
-    roll_no: { type: String },
+    roll_no: { type: String, unique: true },
     name: { type: String },
-    email: { type: String },
+    email: { type: String, unique: true },
     gender: { type: String, enum: ["male", "female"] },
-    phone_no: { type: String },
+    phone_no: { type: String, unique: true },
     course: { type: String },
     branch: { type: String },
     semester: { type: String },

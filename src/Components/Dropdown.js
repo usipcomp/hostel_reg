@@ -41,6 +41,7 @@ function Dropdown(props) {
         className={classes}
         required
         disabled={props.isDisabled}
+        defaultValue={props.default}
       >
         {optionsList}
       </select>

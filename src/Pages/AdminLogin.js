@@ -5,10 +5,14 @@ import axios from "axios";
 import { adminLogin } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 function Login() {
   const [AdminPassword, setAdminPassword] = useState("");
   const [AdminID, setAdminId] = useState("");
+  const [fieldType, setFieldType] = useState("password");
+  const [errorContent, setErrorContent] = useState(<div></div>);
+
   const dispatch = useDispatch();
   const user = useSelector((state) => state);
 
@@ -21,36 +25,69 @@ function Login() {
 
   const handleLogin = async () => {
     adminLogin(dispatch, { adminID: AdminID, password: AdminPassword });
+    if (user.user.error) {
+      setErrorContent(
+        <div className="text-red-500 font-semibold">
+          Please enter the correct credentials
+        </div>
+      );
+    }
   };
-  // console.log(user);
 
-  let error;
-  if (user.error) {
-    error = (
-      <div className="text-red-500 font-semibold">
-        Please enter the correct credentials
-      </div>
+  console.log(AdminID, AdminPassword);
+
+  let eye = (
+    <AiOutlineEye
+      className="my-auto ml-4 cursor-pointer"
+      onClick={() => {
+        setFieldType("string");
+      }}
+      size={30}
+    ></AiOutlineEye>
+  );
+  if (fieldType == "string") {
+    eye = (
+      <AiOutlineEyeInvisible
+        className="my-auto ml-4 cursor-pointer"
+        onClick={() => {
+          setFieldType("password");
+        }}
+        size={30}
+      ></AiOutlineEyeInvisible>
+    );
+  } else {
+    eye = (
+      <AiOutlineEye
+        className="my-auto ml-4 cursor-pointer w-fit"
+        onClick={() => {
+          setFieldType("string");
+        }}
+        size={30}
+      ></AiOutlineEye>
     );
   }
 
   return (
     <div className="h-screen w-full flex">
       <div className="h-fit m-auto bg-[#dde5b6] w-1/3 p-10 rounded-lg">
-        {error}
+        {errorContent}
         <div className="font-bold mx-auto text-3xl my-4">Admin Login</div>
         <InputField
           label="Admin ID"
-          placeholder=""
           type="text"
           textxl={true}
           handleChange={handleAdminID}
         ></InputField>
-        <InputField
-          label="Password"
-          type="password"
-          textxl={true}
-          handleChange={handlePassword}
-        ></InputField>
+        <div className="flex gap-2">
+          <InputField
+            label="Password"
+            type={fieldType}
+            textxl={true}
+            handleChange={handlePassword}
+          ></InputField>
+          {eye}
+        </div>
+
         <Button wide success rounded handleClick={handleLogin}>
           Login
         </Button>
