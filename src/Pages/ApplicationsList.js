@@ -3,15 +3,17 @@ import Button from "../Components/Button";
 import { MdOutlinePictureAsPdf } from "react-icons/md";
 import { GiCancel } from "react-icons/gi";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import InputField from "../Components/InputField";
 import { useSelector } from "react-redux";
 import { CSVLink } from "react-csv";
+import { useNavigate } from "react-router-dom";
 
 const ApplicationsList = ({ showAlert }) => {
   const [applications, setApplications] = useState([]);
   const [toggleButton, setToggleButton] = useState(false);
   const user = useSelector((state) => state.user.currentUser);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getApplications = async () => {
@@ -87,7 +89,7 @@ const ApplicationsList = ({ showAlert }) => {
         admn_year: admn_year,
         current_yeat: current_year,
       }),
-    });
+    }).then(navigate("/admin_application_status"));
     console.log(response);
   };
   const excelCSV = [
