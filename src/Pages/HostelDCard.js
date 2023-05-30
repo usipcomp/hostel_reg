@@ -210,22 +210,20 @@ const HostelDCard = () => {
                       <View style={styles.columnsContainer}>
                         <View style={styles.columnDataSecondary}>
                           <Text>Name</Text>
-                          <Text>H. Roll No.</Text>
+                          <Text>Roll No.</Text>
                           <Text>Year of Admn</Text>
                           <Text>Course</Text>
-                          <Text>Hostel,Room</Text>
+                          <Text>Hostel</Text>
+                          <Text>Room No.</Text>
                           <Text>Remarks</Text>
                         </View>
                         <View style={styles.columnDataSecondary}>
                           <Text> : {application.name}</Text>
-                          <Text> : {`nil`}</Text>
+                          <Text> : {application.roll_no}</Text>
                           <Text> : {application.year_of_admission}</Text>
                           <Text> : {application.course}</Text>
-                          <Text>
-                            {" "}
-                            : {bednPriceData.HostelData.Name},
-                            {bednPriceData.BedData.RoomNo}
-                          </Text>
+                          <Text>: {bednPriceData.HostelData.Name},</Text>
+                          <Text>: {bednPriceData.BedData.BedID}</Text>
                           <Text> : </Text>
                         </View>
                       </View>
@@ -235,11 +233,9 @@ const HostelDCard = () => {
                     <View style={styles.columnsContainer}>
                       <View style={styles.columnDataSecondary}>
                         <Text>Phone</Text>
-                        <Text>U. Roll No.</Text>
                       </View>
                       <View style={styles.columnDataSecondary}>
-                        <Text> : {application.phone}</Text>
-                        <Text> : {application.roll_no}</Text>
+                        <Text> : {application.phone_no}</Text>
                       </View>
                     </View>
                     <View style={styles.instructions}>
