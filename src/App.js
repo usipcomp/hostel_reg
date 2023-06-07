@@ -17,6 +17,7 @@ import NewHostel from "./Pages/NewHostel";
 import AdminLogin from "./Pages/AdminLogin";
 import StudentApplicationView from "./Pages/StudentApplicationView";
 import RejectedApplications from "./Pages/RejectedApplications";
+import HostelList from "./Pages/HostelList";
 import AdminAppStatus from "./Pages/AdminAppStatus";
 import StudentAppStatus from "./Pages/StudentAppStatus";
 import OccupancyHistoryStudent from "./Pages/OccupancyHistoryStudent";
@@ -67,6 +68,7 @@ function App() {
     loginContent,
     ManageHostelsContent,
     rejectedapplications,
+    hostelList,
     AdminApplicationStatus,
     StudentApplicationStatus,
     StudentOccupancyHistory,
@@ -84,6 +86,7 @@ function App() {
     ManageHostelsContent = <AdminLogin showAlert={showAlert}></AdminLogin>;
     NewHostelContent = <AdminLogin showAlert={showAlert}></AdminLogin>;
     rejectedapplications = <AdminLogin showAlert={showAlert}></AdminLogin>;
+    hostelList = <AdminLogin showAlert={showAlert}></AdminLogin>;
     AdminApplicationStatus = <AdminLogin showAlert={showAlert}></AdminLogin>;
     StudentApplicationStatus = <Login showAlert={showAlert}></Login>;
     StudentOccupancyHistory = <Login showAlert={showAlert}></Login>;
@@ -110,6 +113,9 @@ function App() {
     NewHostelContent = <NewHostel showAlert={showAlert}></NewHostel>;
     rejectedapplications = (
       <RejectedApplications showAlert={showAlert}></RejectedApplications>
+    );
+    hostelList = (
+      <HostelList showAlert={showAlert}></HostelList>
     );
     AdminApplicationStatus = (
       <AdminAppStatus showAlert={showAlert}></AdminAppStatus>
@@ -162,6 +168,7 @@ function App() {
             element={StudentOccupancyHistory}
           ></Route>
           <Route path="/hostelid" element={HostelID}></Route>
+          <Route path="/hostelList" element={hostelList}></Route>
         </Routes>
       </Router>
     </div>
