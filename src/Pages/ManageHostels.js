@@ -10,6 +10,7 @@ import InputField from "../Components/InputField";
 import Dropdown from "../Components/Dropdown";
 import SingleHostelInfo from "./SingleHostelInfo";
 import axios from "axios";
+import { MdFileDownload } from "react-icons/md";
 
 function ManageHostels() {
   const dispatch = useDispatch();
@@ -201,6 +202,20 @@ function ManageHostels() {
           </div>
         )}
         <div className="w-full flex justify-center py-10">
+        <Link to="/hostelList?contact">
+                <Button bgGreen handleClick={() => {}}>
+                <MdFileDownload className="my-auto mr-2"></MdFileDownload>
+                  Batch wise List
+                </Button>
+              </Link>
+              <Link to="/hostelList">
+                <Button bgGreen handleClick={() => {}}>
+                <MdFileDownload className="my-auto mr-2"></MdFileDownload>
+                  Hostel wise List
+                </Button>
+              </Link>
+              </div>
+        <div className="w-full flex justify-center pb-10">
           <Link to="/newhostel">
             <Button wide bgGreen handleClick={() => {}}>
               <AiOutlinePlus className="my-auto mr-2"></AiOutlinePlus>
